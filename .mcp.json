@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "aloware": {
+      "type": "http",
+      "url": "https://app.aloware.io/mcp"
+    }
+  }
+}

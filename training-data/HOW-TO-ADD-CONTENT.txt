@@ -1,0 +1,24 @@
+HOW TO ADD TRAINING CONTENT
+============================
+
+Drop any .txt file into this folder and redeploy.
+The chatbot will automatically search through all files here.
+
+GOOD THINGS TO ADD:
+- Group call transcripts (copy/paste the full transcript)
+- DM scripts or sales scripts
+- Offer frameworks
+- Case studies or client wins
+- Objection handling notes
+- Any SOPs not already in the system
+
+FILE NAMING TIPS:
+- Use descriptive names: "group-call-march-2024.txt"
+- One topic per file keeps retrieval cleaner
+- No special characters in filenames
+
+AFTER ADDING FILES:
+Run: npx netlify deploy --prod
+(or push to GitHub if connected)
+
+That's it. No code changes needed.

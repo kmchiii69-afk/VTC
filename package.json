@@ -1,0 +1,46 @@
+{
+  "name": "brand-architect-portal",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "node scripts/sync-training.mjs && next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.90.0",
+    "@paper-design/shaders-react": "^0.0.76",
+    "@react-three/fiber": "^9.6.0",
+    "@supabase/supabase-js": "^2.106.1",
+    "@twilio/voice-sdk": "^2.18.3",
+    "@types/bcryptjs": "^2.4.6",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "bcryptjs": "^3.0.3",
+    "jose": "^6.2.3",
+    "lucide-react": "^1.8.0",
+    "next": "^16.2.12",
+    "pdf-lib": "^1.17.1",
+    "pdf-parse": "^1.1.4",
+    "posthog-js": "^1.399.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "three": "^0.184.0",
+    "youtube-transcript": "^1.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.184.0",
+    "eslint": "^9",
+    "eslint-config-next": "^16.2.12",
+    "playwright": "^1.62.1",
+    "puppeteer-core": "^25.1.0",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "ws": "^8.20.1"
+  }
+}

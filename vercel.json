@@ -1,0 +1,28 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/sync-fathom",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/onboarding-reminders",
+      "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/weekly-cash-prompt",
+      "schedule": "0 14 * * 1"
+    },
+    {
+      "path": "/api/cron/creative-wednesday-report-prompt",
+      "schedule": "0 8 * * 3"
+    },
+    {
+      "path": "/api/cron/creative-weekly-report-prompt",
+      "schedule": "0 8 * * 5"
+    },
+    {
+      "path": "/api/cron/close-sync",
+      "schedule": "*/10 * * * *"
+    }
+  ]
+}

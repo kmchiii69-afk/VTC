@@ -152,7 +152,7 @@ export default function WebinarPreviewPage() {
       <main style={{ maxWidth: 900, margin: '0 auto', padding: 'clamp(32px,6vw,60px) clamp(20px,5vw,32px) 80px', textAlign: 'center' }}>
         {/* Logo */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(24px,4vw,36px)' }}>
-          <img src="/onboarding/goh-logo.png" alt="Goh Consulting" style={{ width: 92, height: 92, objectFit: 'contain' }} />
+          <img src="/onboarding/goh-logo.png" alt="VTC" style={{ width: 92, height: 92, objectFit: 'contain' }} />
         </div>
 
         {/* Headline */}

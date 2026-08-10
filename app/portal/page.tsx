@@ -1297,7 +1297,7 @@ function RecordingsView({ onBack }: { onBack?: () => void }) {
       onDelete={del}
       onChanged={load}
       title="Call Recordings"
-      blurb="Every coaching call in one place — Content Mastermind, Brand Architect, and Scripting Mastermind. Pick a session from the list to watch, revisit a breakthrough, or catch up on one you missed."
+      blurb="Every coaching call in one place — Content Mastermind, VTC, and Scripting Mastermind. Pick a session from the list to watch, revisit a breakthrough, or catch up on one you missed."
       onBack={onBack}
       backLabel="Dashboard"
     />
@@ -1361,7 +1361,7 @@ function DashboardView({
             fontSize: '10px', letterSpacing: '0.25em', textTransform: 'uppercase',
             color: '#c9a455', marginBottom: 12, fontWeight: 700,
           }}>
-            Brand Architect · Member Portal
+            VTC · Member Portal
           </div>
           <h1 className="font-serif" style={{
             fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)',

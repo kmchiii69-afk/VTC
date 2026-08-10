@@ -76,10 +76,10 @@ export function WelcomeBack({ name, done = 0, total = 0 }: { name?: string; done
         ✕
       </button>
 
-      {/* Goh Consulting logo (same asset as the onboarding Join-Discord step, no glow) */}
+      {/* VTC logo (same asset as the onboarding Join-Discord step, no glow) */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/onboarding/goh-logo.png" alt="Goh Consulting"
+        <img src="/onboarding/goh-logo.png" alt="VTC"
           style={{ width: 76, height: 76, objectFit: 'contain' }} />
       </div>
 

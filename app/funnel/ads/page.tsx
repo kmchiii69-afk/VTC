@@ -73,7 +73,7 @@ export default function AdsGate() {
       <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 480 }}>
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-            <img src="/onboarding/goh-logo.png" alt="Goh Consulting" style={{ width: 104, height: 104, objectFit: 'contain' }} />
+            <img src="/onboarding/goh-logo.png" alt="VTC" style={{ width: 104, height: 104, objectFit: 'contain' }} />
           </div>
           <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: GOLD, marginBottom: 14 }}>
             Quick Question First

@@ -1,6 +1,6 @@
 // GET /api/analytics/funnel?days=30
 //
-// Brand Architect analytics backend. Returns two ORDERED funnels (lead magnet +
+// VTC analytics backend. Returns two ORDERED funnels (lead magnet +
 // $5K HT offer) plus: LM→HT crossover, traffic sources, Whop revenue, and
 // Call/Kit email nurture data.
 

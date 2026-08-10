@@ -182,7 +182,7 @@ export default function LoginPage() {
           fontSize: '11px', letterSpacing: '0.45em', textTransform: 'uppercase',
           color: 'rgba(201,164,85,0.6)', fontWeight: 400, marginBottom: '2.5rem',
         }}>
-          Goh Consulting
+          VTC
         </p>
 
         {submitted ? (

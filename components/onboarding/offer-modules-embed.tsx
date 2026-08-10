@@ -24,7 +24,7 @@ const MINDSET_MODULES: { title: string; embedId: string }[] = [
   { title: 'Mindset', embedId: 'C2wEZO_Mgb7MLcW2' },
   { title: 'Removing Limiting Beliefs To Make $151k/mo', embedId: 'EOQPKFSGQJkRf7ho' },
   { title: 'Break Your Old Identity', embedId: '0cZl3DFQbx95_3cy' },
-  { title: 'Maximising Goh Consulting', embedId: 'jVqmwBo7_O479EkL' },
+  { title: 'Maximising VTC', embedId: 'jVqmwBo7_O479EkL' },
   { title: 'Nero Mastermind Call', embedId: 'Khfph1B95I88VARC' },
 ];
 

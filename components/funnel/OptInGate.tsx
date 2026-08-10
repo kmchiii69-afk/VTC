@@ -94,7 +94,7 @@ export default function OptInGate({ funnel, redirectTo = '/funnel/vsl' }: { funn
     window.scrollTo(0, 0);
     tracking.current = captureTracking();
     track('optin_view', { ...tracking.current });
-    fireStandard('ViewContent', { content_name: `Brand Architect ${funnel}`, content_type: 'funnel' });
+    fireStandard('ViewContent', { content_name: `VTC ${funnel}`, content_type: 'funnel' });
     if (!document.querySelector('link[data-gf]')) {
       const l = document.createElement('link');
       l.rel = 'stylesheet'; l.setAttribute('data-gf', '1');
@@ -163,7 +163,7 @@ export default function OptInGate({ funnel, redirectTo = '/funnel/vsl' }: { funn
         }),
       });
       track('optin_submitted', { making_money: a.making_money, monthly_cash: a.monthly_cash });
-      if (a.email && fireOnce(`${funnel}-lead:${a.email}`)) fireLead({ email: a.email, contentName: `Brand Architect ${funnel}` });
+      if (a.email && fireOnce(`${funnel}-lead:${a.email}`)) fireLead({ email: a.email, contentName: `VTC ${funnel}` });
       setPhase('thanks');
     } catch {
       setErr('Something went wrong. Please try again.');
@@ -193,7 +193,7 @@ export default function OptInGate({ funnel, redirectTo = '/funnel/vsl' }: { funn
           boxShadow: '0 24px 80px rgba(0,0,0,0.6)',
         }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: phase === 'form' ? 18 : 20 }}>
-            <img src="/onboarding/goh-logo.png" alt="Goh Consulting" style={{ width: 68, height: 68, objectFit: 'contain' }} />
+            <img src="/onboarding/goh-logo.png" alt="VTC" style={{ width: 68, height: 68, objectFit: 'contain' }} />
           </div>
 
           {phase === 'form' ? (

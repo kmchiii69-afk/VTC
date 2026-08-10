@@ -1553,7 +1553,7 @@ export default function AdminPage() {
           }}>Admin Panel</span>
         </div>
         <span style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,164,85,0.4)' }}>
-          Goh Consulting
+          VTC
         </span>
       </div>
 
@@ -5898,7 +5898,7 @@ function AnalyticsView() {
       {/* ── TOPBAR ── */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '10px 0 18px' }}>
         <div>
-          <div style={{ fontFamily: SERIF, fontWeight: 300, fontSize: 26, color: CRFN }}>Brand Architect</div>
+          <div style={{ fontFamily: SERIF, fontWeight: 300, fontSize: 26, color: CRFN }}>VTC</div>
           <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: CRFD }}>Funnel command center</div>
         </div>
         <div style={{ flex: 1 }} />

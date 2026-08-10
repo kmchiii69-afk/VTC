@@ -4,7 +4,7 @@
  * real pre-call page: journey timeline, a reflection prompt, a fit
  * qualifier, a prep checklist, and social proof — modeled on the Prophecy AI
  * precall-stage1/2 pattern (~/Desktop/kimchi/precall-stage1.html), adapted to
- * Goh Consulting's gold/cream Cormorant Garamond + DM Sans look. Copy flexes
+ * VTC's gold/cream Cormorant Garamond + DM Sans look. Copy flexes
  * by ICP tier (computed from the investment/commitment answers already
  * collected on the qualification form) rather than duplicating a whole
  * screen per funnel. */

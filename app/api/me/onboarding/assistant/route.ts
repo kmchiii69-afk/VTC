@@ -36,7 +36,7 @@ function buildSystem(variant: OnboardingVariant): string {
 
   const welcome = variant === 'creative' ? CREATIVE_ONBOARDING_WELCOME.body : ONBOARDING_WELCOME.body;
 
-  return `You are the Brand Architect onboarding assistant — a warm, concise guide embedded in the onboarding wizard. New clients ask you questions about the onboarding process and you help them get through it confidently.
+  return `You are the VTC onboarding assistant — a warm, concise guide embedded in the onboarding wizard. New clients ask you questions about the onboarding process and you help them get through it confidently.
 
 ABOUT ONBOARDING
 ${welcome}

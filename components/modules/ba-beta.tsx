@@ -57,7 +57,7 @@ export function BetaSidebar({
           <div style={{ padding: '16px 20px 6px', display: 'flex', alignItems: 'center', gap: 7 }}>
             <FlaskConical size={12} color={G} style={{ flexShrink: 0 }} />
             <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '9px', letterSpacing: '0.26em', textTransform: 'uppercase', fontWeight: 800, color: 'rgba(201,164,85,0.65)' }}>
-              Brand Architect
+              VTC
             </span>
           </div>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '9.5px', letterSpacing: '0.05em', color: 'rgba(201,164,85,0.3)', padding: '0 20px 8px', textTransform: 'uppercase', fontWeight: 600 }}>
@@ -370,7 +370,7 @@ export function BetaEditor({ tree, onChanged, onClose }: { tree: BetaTree | null
       <div onClick={(e) => e.stopPropagation()} style={{ width: '100%', maxWidth: 780, maxHeight: '88vh', display: 'flex', flexDirection: 'column', background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(201,164,85,0.14)', borderRadius: 20, backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', boxShadow: '0 30px 80px rgba(0,0,0,0.45)', overflow: 'hidden' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '16px 20px', borderBottom: '1px solid rgba(201,164,85,0.14)' }}>
           <div className="font-serif" style={{ color: '#f0e8d4', fontSize: '1.25rem', fontWeight: 300, display: 'flex', alignItems: 'center', gap: 9 }}>
-            <FlaskConical size={17} color={G} /> Brand Architect
+            <FlaskConical size={17} color={G} /> VTC
           </div>
           <button onClick={onClose} title="Close" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#a89e8a', display: 'flex' }}><X size={20} /></button>
         </div>

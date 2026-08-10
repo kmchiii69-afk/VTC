@@ -3,7 +3,7 @@ import SegmentFunnel, { type SegmentConfig } from '@/components/funnel/SegmentFu
 const cfg: SegmentConfig = {
   segment: 'under-100k',
   apiEndpoint: '/api/funnel/segment-application',
-  pixelContentName: 'Brand Architect — Under 100k',
+  pixelContentName: 'VTC — Under 100k',
   // This funnel books its own Calendly event (not the shared "1 on 1 Strategy Call").
   calendlyEventName: '1-on-1 Strategy Call',
   calendlyEventSlug: '1-on-1-strategy-calls',

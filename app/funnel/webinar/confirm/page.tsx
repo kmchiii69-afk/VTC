@@ -160,7 +160,7 @@ export default function WebinarConfirmPage() {
             <p style={{ fontFamily: F, fontSize: 'clamp(16px,2vw,19px)', color: '#e8e8e8', lineHeight: 1.6, fontStyle: 'italic', marginBottom: 14 }}>
               &ldquo;We fixed one thing in Hans&apos; content system and he added <strong style={{ color: '#fff', fontStyle: 'normal' }}>$95K/month</strong>. Same frameworks I&apos;m walking through, live, in this free masterclass.&rdquo;
             </p>
-            <cite style={{ fontFamily: F, fontSize: 14, color: '#888', fontStyle: 'normal' }}>— SooWei Goh, Goh Consulting</cite>
+            <cite style={{ fontFamily: F, fontSize: 14, color: '#888', fontStyle: 'normal' }}>— SooWei Goh, VTC</cite>
           </blockquote>
         </section>
 

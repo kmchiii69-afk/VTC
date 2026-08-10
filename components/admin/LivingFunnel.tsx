@@ -1,6 +1,6 @@
 'use client';
 /* =====================================================================
-   LIVING FUNNEL — Brand Architect analytics hero
+   LIVING FUNNEL — VTC analytics hero
    Canvas-based multi-source Sankey: each gate's bar is stacked into
    colored segments per traffic channel (Instagram, YouTube, Paid Ads,
    Organic, Direct, Referral, Preview, Other), and each segment flows on

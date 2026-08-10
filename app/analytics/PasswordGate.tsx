@@ -88,7 +88,7 @@ export default function PasswordGate() {
             color: gold, textTransform: "uppercase" as const,
             marginBottom: 36,
           }}>
-            Goh Consulting
+            VTC
           </div>
 
           <form onSubmit={submit} style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>

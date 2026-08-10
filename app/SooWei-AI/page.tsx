@@ -1455,9 +1455,9 @@ export default function AssistantPage() {
         {/* Logo + company name */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '20px 18px 16px' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/onboarding/goh-logo.png" alt="Goh Consulting" style={{ width: 36, height: 36, objectFit: 'contain', flexShrink: 0 }} />
+          <img src="/onboarding/goh-logo.png" alt="VTC" style={{ width: 36, height: 36, objectFit: 'contain', flexShrink: 0 }} />
           <div style={{ minWidth: 0 }}>
-            <div className="font-serif" style={{ fontSize: '1.05rem', fontWeight: 400, color: '#f0e8d4', lineHeight: 1.05 }}>Goh Consulting</div>
+            <div className="font-serif" style={{ fontSize: '1.05rem', fontWeight: 400, color: '#f0e8d4', lineHeight: 1.05 }}>VTC</div>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 700, color: 'rgba(201,164,85,0.55)', marginTop: 3 }}>SooWei AI</div>
           </div>
         </div>

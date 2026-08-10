@@ -752,7 +752,7 @@ function pacer(isWelcome: boolean, stepId: string, isLastStep: boolean, isStepDo
   return STEP_PACER[stepId] ?? "You're on your way — every step brings your CSM onboarding call closer.";
 }
 
-// Glowing Goh Consulting logo on the Join-Discord step. Transparent PNG, so it
+// Glowing VTC logo on the Join-Discord step. Transparent PNG, so it
 // drops straight onto the card; the radial glow + drop-shadow give it the lit look.
 function GlowLogo() {
   return (
@@ -762,7 +762,7 @@ function GlowLogo() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/onboarding/goh-logo.png"
-          alt="Goh Consulting"
+          alt="VTC"
           style={{ position: 'relative', width: 142, height: 142, objectFit: 'contain', filter: 'drop-shadow(0 0 9px rgba(201,164,85,0.18))' }}
         />
       </div>

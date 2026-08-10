@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAuthUser } from '@/lib/auth';
 import { createBetaCategory } from '@/lib/ba-beta';
 
-// Admin: create a Brand Architect Beta category.
+// Admin: create a VTC Beta category.
 export async function POST(req: NextRequest) {
   const auth = await getAuthUser();
   if (!auth || auth.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });

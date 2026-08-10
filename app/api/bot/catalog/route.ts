@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Brand Architect modules (the members' /modules catalog). No per-lesson deep
+  // VTC modules (the members' /modules catalog). No per-lesson deep
   // link exists, so every module link opens /modules; the category + title are
   // carried for matching and for the bot to show in its reply.
   //

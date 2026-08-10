@@ -11,8 +11,8 @@ import { LeaderboardBubble } from '@/components/ui/leaderboard-bubble';
 import { ShaderBackground } from '@/components/ui/gem-smoke-metaballs';
 
 export const metadata: Metadata = {
-  title: "Brand Architect | Goh Consulting",
-  description: "Member portal for Brand Architect by Goh Consulting",
+  title: "VTC",
+  description: "Member portal for VTC",
 };
 
 // Without width=device-width mobile browsers render at ~980px and zoom out,

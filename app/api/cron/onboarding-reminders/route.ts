@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
   // channel so you can see it render in Discord. No fan-out, no dedup writes.
   const sendTo = req.nextUrl.searchParams.get('send');
   if (sendTo && process.env.NODE_ENV !== 'production') {
-    const message = buildReminderMessage('Alex', 'Join Our Brand Architect Discord', 3);
+    const message = buildReminderMessage('Alex', 'Join Our VTC Discord', 3);
     const ok = await sendChannelMessage(sendTo, message).catch(() => false);
     return NextResponse.json({ ok, test: true, channel: sendTo, message });
   }
@@ -38,8 +38,8 @@ export async function GET(req: NextRequest) {
   // In dry mode with no currently-stuck client, show a sample so the format is visible.
   if (dry && result.previews && result.previews.length === 0) {
     result.previews.push({
-      name: 'Alex', step: 'Join Our Brand Architect Discord', days: 3, hasChannel: true,
-      message: buildReminderMessage('Alex', 'Join Our Brand Architect Discord', 3),
+      name: 'Alex', step: 'Join Our VTC Discord', days: 3, hasChannel: true,
+      message: buildReminderMessage('Alex', 'Join Our VTC Discord', 3),
     });
   }
 

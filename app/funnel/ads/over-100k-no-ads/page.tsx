@@ -3,7 +3,7 @@ import SegmentFunnel, { type SegmentConfig } from '@/components/funnel/SegmentFu
 const cfg: SegmentConfig = {
   segment: 'over-100k-no-ads',
   apiEndpoint: '/api/funnel/segment-application',
-  pixelContentName: 'Brand Architect — Over 100k No Ads',
+  pixelContentName: 'VTC — Over 100k No Ads',
   eyebrow: '$100K+/Mo Businesses Growing Organically',
   headlinePre: 'How Established Founders Are Adding',
   headlineHi: '$100-300k/Mo',

@@ -144,7 +144,7 @@ export default function Dashboard() {
         <div className="topbar">
           <div className="brand">
             <BAMark size={26} />
-            <div className="title"><b>Brand Architect // JARVIS</b><span>Goh Consulting · Operator HUD</span></div>
+            <div className="title"><b>VTC // JARVIS</b><span>VTC · Operator HUD</span></div>
           </div>
           <span className="spacer" />
           <div className="rangepills">{[7, 30, 90].map((r) => <button key={r} className={r === days ? "on" : ""} onClick={() => setDays(r)}>{r}d</button>)}</div>

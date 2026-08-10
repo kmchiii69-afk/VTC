@@ -47,7 +47,7 @@ export default function GuidePage() {
         {guide ? (
           <>
             <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '10px', letterSpacing: '0.4em', textTransform: 'uppercase', fontWeight: 700, color: 'rgba(201,164,85,0.45)', margin: '0 0 0.6rem' }}>
-              Goh Consulting
+              VTC
             </p>
             <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 300, color: '#f0e8d4', lineHeight: 1.1, margin: '0 0 0.5rem' }}>
               {guide.title}

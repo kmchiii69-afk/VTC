@@ -4,7 +4,7 @@ import { updateUser } from '@/lib/kv';
 import { logEvent } from '@/lib/journey';
 import { ONBOARDING_STEPS } from '@/lib/onboarding-data';
 
-// Records which Brand Architect contract a client selected during onboarding,
+// Records which VTC contract a client selected during onboarding,
 // against their account, before they open the signing form.
 export async function POST(req: Request) {
   const user = await getAuthUser();

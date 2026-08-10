@@ -65,7 +65,7 @@ const CASE_STUDIES: { pre: string; hi: string; id: string; t: number; list?: str
 ];
 
 function GohLogo() {
-  return <img src="/onboarding/goh-logo.png" alt="Goh Consulting" style={{ width: 104, height: 104, objectFit: 'contain' }} />;
+  return <img src="/onboarding/goh-logo.png" alt="VTC" style={{ width: 104, height: 104, objectFit: 'contain' }} />;
 }
 
 /* Renders a Vidalytics embed the same way the ads funnel does — drop the

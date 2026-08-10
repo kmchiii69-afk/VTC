@@ -6,7 +6,7 @@ import SegmentFunnel, { type SegmentConfig } from '@/components/funnel/SegmentFu
 const cfg: SegmentConfig = {
   segment: 'vsl',
   apiEndpoint: '/api/funnel/application',
-  pixelContentName: 'Brand Architect VSL',
+  pixelContentName: 'VTC VSL',
   eyebrow: 'Coaches & Consultants',
   headlinePre: 'How Established Founders Are Adding',
   headlineHi: '$100-300k/Mo',

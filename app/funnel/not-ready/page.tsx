@@ -50,7 +50,7 @@ export default function NotReadyPage() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <section style={{ textAlign: 'center', padding: '56px 24px 0', maxWidth: 860, margin: '0 auto' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 28 }}>
-            <img src="/onboarding/goh-logo.png" alt="Goh Consulting" style={{ width: 92, height: 92, objectFit: 'contain' }} />
+            <img src="/onboarding/goh-logo.png" alt="VTC" style={{ width: 92, height: 92, objectFit: 'contain' }} />
           </div>
           <h1 style={{ fontFamily: F, fontSize: 'clamp(24px,3.2vw,36px)', fontWeight: 800, color: '#fff', lineHeight: 1.22, letterSpacing: '-0.01em' }}>
             You&apos;re not ready to work with us yet, but we&apos;ll send you{' '}

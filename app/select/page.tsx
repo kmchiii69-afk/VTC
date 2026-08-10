@@ -9,7 +9,7 @@ import type { TourStep } from '@/components/onboarding/onboarding-tour';
 import { RECORDING_CATEGORY_IDS, recordingCategory, formatCallDate, type Recording } from '@/lib/recordings';
 
 const SELECT_TOUR: TourStep[] = [
-  { title: 'Welcome to Brand Architect', body: 'This is your starting screen — a quick look at how to get around.' },
+  { title: 'Welcome to VTC', body: 'This is your starting screen — a quick look at how to get around.' },
   { target: 'select-nav', title: 'Choose where to go', body: 'Talk to your AI assistant, or jump into your recordings, roadmap, and SOP library.' },
 ];
 

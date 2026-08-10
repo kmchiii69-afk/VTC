@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // buildV4 — transforms the live analytics API responses into display values.
-// Adapted for Brand Architect: $5K HT funnel + Lead Magnet funnel.
+// Adapted for VTC: $5K HT funnel + Lead Magnet funnel.
 
 export const C = {
   acid: "#C9A455", blue: "#8FD0FF", purp: "#C9A8FF", amber: "#F59E0B",
@@ -152,8 +152,8 @@ export function mapLiveEvent(e: any): string {
 
 const SEEDS = {
   PIVOT: [
-    { color: C.purp, title: "Brand positioning drives everything", text: "Coaches who are key-man risks can't scale. Brand Architect removes that ceiling — the positioning work done in Phase 1 is the foundation every subsequent piece relies on." },
-    { color: C.acid, title: "High-ticket is the right model", text: "One Brand Architect client at $5K–$18K outearns ten low-ticket sales. The focus is getting the right clients in, not volume." },
+    { color: C.purp, title: "Brand positioning drives everything", text: "Coaches who are key-man risks can't scale. VTC removes that ceiling — the positioning work done in Phase 1 is the foundation every subsequent piece relies on." },
+    { color: C.acid, title: "High-ticket is the right model", text: "One VTC client at $5K–$18K outearns ten low-ticket sales. The focus is getting the right clients in, not volume." },
     { color: C.amber, title: "High-ticket is lumpy by nature", text: "A handful of $5K–$18K closes = inherent month-to-month swing. The fix isn't a steadier price — it's more qualified volume in the pipeline." },
     { color: C.blue, title: "Long trust cycle = content is everything", text: "Nobody pays $5K cold. The warm-up engine (lead magnet → email → offer page) is mission-critical. Build it tight." },
     { color: C.acid, title: "Revenue tracks content reach almost 1:1", text: "More qualified eyes on your content = more qualified applications. The growth lever is top-of-funnel volume, not conversion tweaks." },

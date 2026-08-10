@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 
 // Mounts a Vidalytics player for the given embed id. Same loader the /modules
-// player uses; shared so the Brand Architect Beta lesson view renders identically.
+// player uses; shared so the VTC Beta lesson view renders identically.
 export function VidalyticsEmbed({ embedId }: { embedId: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   // A Vidalytics id is a short alphanumeric token. Anything else (a full embed

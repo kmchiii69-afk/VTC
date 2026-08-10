@@ -251,7 +251,7 @@ If you need one thing to give a real answer, ask one question. If you have enoug
 
 const BRAND_CONTEXT = `
 SOOWEI GOH — WHO HE IS:
-SooWei Goh, founder of Goh Consulting. Personal branding and content strategy for online coaches and consultants ($3K–$100K+/mo). Asian founder, 21 years old, built to $400K/mo. Offer: Brand Architect — DWY $12K/4mo → DFY $18K/6mo → backend renewals. He's built personal brands from scratch multiple times. He's studied Hormozi's team, Iman Gadzhi's head of content, paid $30K+ into mentorships — then distilled it and teaches it.
+SooWei Goh, founder of Goh Consulting. Personal branding and content strategy for online coaches and consultants ($3K–$100K+/mo). Asian founder, 21 years old, built to $400K/mo. Offer: VTC — DWY $12K/4mo → DFY $18K/6mo → backend renewals. He's built personal brands from scratch multiple times. He's studied Hormozi's team, Iman Gadzhi's head of content, paid $30K+ into mentorships — then distilled it and teaches it.
 
 SCOPE:
 - DOES: organic personal branding, short-form content (Instagram Reels, YouTube Shorts, long-form YouTube), content strategy, brand positioning, offer clarity, DM setting, sales process

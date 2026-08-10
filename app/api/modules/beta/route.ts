@@ -4,7 +4,7 @@ import { getBetaTree } from '@/lib/ba-beta';
 
 export const dynamic = 'force-dynamic';
 
-// Read-only Brand Architect catalog for ANY signed-in user (members + admins).
+// Read-only VTC catalog for ANY signed-in user (members + admins).
 // This is what members now see on /modules in place of the Goh Consulting
 // program catalog. All writes still go through the admin-only /api/admin/ba-beta
 // endpoints, so members can read but never mutate it.

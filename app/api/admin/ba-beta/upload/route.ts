@@ -5,7 +5,7 @@ import { db } from '@/lib/kv';
 const BUCKET = 'ba-beta-docs';
 const MAX_BYTES = 25 * 1024 * 1024; // 25MB
 
-// Admin: upload a PDF for a Brand Architect Beta resource pill. Stored in a
+// Admin: upload a PDF for a VTC Beta resource pill. Stored in a
 // public Supabase Storage bucket; the returned public URL is saved into the
 // resource's `url` field and rendered in the same iframe popup as pasted links.
 export async function POST(req: NextRequest) {

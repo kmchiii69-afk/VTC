@@ -181,7 +181,7 @@ export default function IGFunnel() {
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0 20px', maxWidth: 480, margin: '0 auto', width: '100%' }}>
             {/* Logo */}
             <div style={{ paddingTop: 28, paddingBottom: 32, textAlign: 'center' }}>
-              <img src="/logo.png" alt="Goh Consulting" style={{ height: 52, width: 'auto' }} />
+              <img src="/logo.png" alt="VTC" style={{ height: 52, width: 'auto' }} />
             </div>
 
             {/* Hook headline */}
@@ -330,7 +330,7 @@ export default function IGFunnel() {
         {step !== 4 && (
           <div style={{ padding: '20px 24px', textAlign: 'center' }}>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: CREAM_FAINT, lineHeight: 1.7 }}>
-              © 2026 Goh Consulting · Results vary · Not financial advice
+              © 2026 VTC · Results vary · Not financial advice
             </div>
           </div>
         )}

@@ -88,7 +88,7 @@ function RecordingModal({ rec, onClose }: { rec: { label: string; category: stri
           {state === 'loading' && <div style={{ textAlign: 'center', color: 'rgba(240,232,212,0.55)', fontFamily: "'DM Sans', sans-serif", fontSize: 13 }}>Loading…</div>}
           {state === 'none' && (
             <div style={{ textAlign: 'center', color: 'rgba(240,232,212,0.6)', fontFamily: "'DM Sans', sans-serif", fontSize: 13.5, lineHeight: 1.6 }}>
-              This recording isn’t available yet — find it in the <Link href="/hub" style={{ color: '#c9a455' }}>Brand Architect recordings</Link>.
+              This recording isn’t available yet — find it in the <Link href="/hub" style={{ color: '#c9a455' }}>VTC recordings</Link>.
             </div>
           )}
           {state === 'ready' && match && (

@@ -1,7 +1,7 @@
 // GET /api/analytics/morning?end=<iso>
 //
 // The Morning Report. 5am snapshot of the completed prior day. See fous version
-// for full comments — this is adapted for Brand Architect BA events.
+// for full comments — this is adapted for VTC BA events.
 
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthed } from "@/lib/analytics-auth";

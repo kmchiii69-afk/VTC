@@ -495,7 +495,7 @@ function IntakeForm({ cfg, onDone }: { cfg: SegmentConfig; onDone: (data: Record
 
 function GohLogo() {
   // Same transparent-PNG mark used on the onboarding Join-Discord step (no glow here).
-  return <img src="/onboarding/goh-logo.png" alt="Goh Consulting" style={{ width: 104, height: 104, objectFit: 'contain' }} />;
+  return <img src="/onboarding/goh-logo.png" alt="VTC" style={{ width: 104, height: 104, objectFit: 'contain' }} />;
 }
 
 const ADS_REVENUE_FLOOR: Record<string, number> = {
@@ -816,7 +816,7 @@ export default function SegmentFunnel({ cfg }: { cfg: SegmentConfig }) {
                 {[
                   { src: '/box1-breakdown.png', alt: 'Brand Breakdown Session', gold: 'Personalized Breakdown', rest: ' Of Your Personal Brand To Identify Bottlenecks' },
                   { src: '/box2-walkthrough.png', alt: 'AI Strategy Generator', gold: '$408k/Mo', rest: 'Systems That Scaled Us To ', restAfter: ' Completely Organic With No Ads', goldFirst: false },
-                  { src: '/box3-roadmap.png', alt: 'Brand Architect Portal', gold: 'Personalized Roadmap', rest: ' Showing Exactly How You Can Build Your Brand In Less Than 10 Hours A Week' },
+                  { src: '/box3-roadmap.png', alt: 'VTC Portal', gold: 'Personalized Roadmap', rest: ' Showing Exactly How You Can Build Your Brand In Less Than 10 Hours A Week' },
                 ].map(({ src, alt, gold, rest, restAfter, goldFirst }) => (
                   <div key={alt} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div style={{ width: '100%', borderRadius: 14, overflow: 'hidden', marginBottom: 20 }}>
@@ -884,7 +884,7 @@ export default function SegmentFunnel({ cfg }: { cfg: SegmentConfig }) {
               We&apos;ve Received Your Application
             </h2>
             <p style={{ fontFamily: F, fontSize: 16, color: '#888', lineHeight: 1.8, marginBottom: 32 }}>
-              Our team will review your answers and reach out directly if you&apos;re a strong fit for the Brand Architect program.
+              Our team will review your answers and reach out directly if you&apos;re a strong fit for the VTC program.
               In the meantime, explore our client results below.
             </p>
             <a

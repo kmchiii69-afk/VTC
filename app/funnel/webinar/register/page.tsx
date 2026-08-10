@@ -27,7 +27,7 @@ import { fireCustom, fireStandard, fireLead } from '@/lib/pixel-tracker';
 const CUSTOM_FORM = process.env.NEXT_PUBLIC_WEBINAR_CUSTOM_FORM === '1';
 const PRIVACY_URL = 'https://gohconsulting.app/privacy';
 const TERMS_URL = 'https://gohconsulting.app/terms';
-const SMS_SENDER = 'Goh Consulting';
+const SMS_SENDER = 'VTC';
 
 const Y = '#F5E6A3';
 const BG = '#0a0a0a';
@@ -368,7 +368,7 @@ export default function WebinarRegisterPage() {
               <p style={{ fontFamily: F, fontSize: 'clamp(15px,1.6vw,18px)', fontWeight: 500, color: '#f4f1e8', lineHeight: 1.6, fontStyle: 'italic', margin: '0 auto 18px', maxWidth: 600 }}>
                 The content game for coaches and consultants just changed — again. The ones who build a real brand and a real content system now are the ones who&apos;ll own their market in the next 12–24 months. This masterclass shows you exactly how.
               </p>
-              <cite style={{ fontFamily: F, fontSize: 13, fontWeight: 700, letterSpacing: '0.04em', color: Y, fontStyle: 'normal' }}>SooWei Goh · Goh Consulting</cite>
+              <cite style={{ fontFamily: F, fontSize: 13, fontWeight: 700, letterSpacing: '0.04em', color: Y, fontStyle: 'normal' }}>SooWei Goh · VTC</cite>
             </blockquote>
           </section>
 

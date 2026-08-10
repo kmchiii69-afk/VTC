@@ -212,7 +212,7 @@ function ModulesInner() {
   const [roleError, setRoleError] = useState(false);
   const [editorOpen, setEditorOpen] = useState(false);
 
-  // Brand Architect Beta — admin-only sandbox catalog layered on top of /modules.
+  // VTC Beta — admin-only sandbox catalog layered on top of /modules.
   // We track only the selected lesson id and resolve the live lesson from the
   // tree on render, so edits/deletes reflect without a state-sync effect.
   const [betaTree, setBetaTree] = useState<BetaTree | null>(null);
@@ -224,7 +224,7 @@ function ModulesInner() {
   const [betaError, setBetaError] = useState(false);
 
   // Catalog. Starts EMPTY, never with the built-in seed defaults: painting those
-  // while /api/modules is still in flight flashed the old Goh Consulting 2.0 list
+  // while /api/modules is still in flight flashed the old VTC 2.0 list
   // into the sidebar for a frame, then swapped it for the live one.
   const [sections, setSections] = useState<ModuleSection[]>([]);
   // Whether the live catalog is DB-backed. Comes from the API — inferring it from
@@ -236,8 +236,8 @@ function ModulesInner() {
     const raw = parseInt(searchParams.get('m') ?? '0', 10) || 0;
     return Math.max(0, raw);
   });
-  // Admin only: they've navigated into the Goh Consulting program catalog, so a
-  // Brand Architect load failure shouldn't take that view over.
+  // Admin only: they've navigated into the VTC program catalog, so a
+  // VTC load failure shouldn't take that view over.
   const [programSelected, setProgramSelected] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -246,7 +246,7 @@ function ModulesInner() {
   const [catalogLoaded, setCatalogLoaded] = useState(false);
   const [programError, setProgramError] = useState(false);
 
-  // Same retry as the Brand Architect catalog below: nothing renders in the
+  // Same retry as the VTC catalog below: nothing renders in the
   // program list until this lands, because the built-in seed defaults are a
   // DIFFERENT module list than the live one — the admin-side version of "the
   // topics changed between loads". programError says so out loud instead.
@@ -258,7 +258,7 @@ function ModulesInner() {
     setCatalogLoaded(true);
   };
 
-  // Brand Architect catalog. Members read it via /api/modules/beta (the admin
+  // VTC catalog. Members read it via /api/modules/beta (the admin
   // endpoint 403s for them); it's what members now see in place of the Goh
   // Consulting program catalog. Admins load it too — they keep both catalogs.
   // Retried, because a single failed request used to empty the whole library
@@ -303,7 +303,7 @@ function ModulesInner() {
     }
   }
 
-  // Members now see the Brand Architect catalog only; the Goh Consulting program
+  // Members now see the VTC catalog only; the VTC program
   // catalog is hidden from them (admins still see + manage both). Gate on
   // roleResolved so admins never flash the member-only view before /me returns.
   // roleError guards this: an unresolved role must not silently mean "member",
@@ -314,7 +314,7 @@ function ModulesInner() {
   // no embed is hidden from them (and any category left empty drops out too)
   // until a video is added. Admins keep seeing every lesson so they can add the
   // videos in the first place.
-  // Still fetching the Brand Architect catalog. Distinct from "loaded and empty":
+  // Still fetching the VTC catalog. Distinct from "loaded and empty":
   // rendering the empty-state sidebar in the meantime told people they had no
   // modules a frame before their modules arrived.
   const betaLoading = betaTree === null && !betaError;
@@ -338,8 +338,8 @@ function ModulesInner() {
   const betaIndex = betaSelId ? betaFlat.findIndex((x) => x.lesson.id === betaSelId) : -1;
 
   // Gate the main content until we KNOW which catalog to show — otherwise the
-  // Goh Consulting program's first module (from the seed defaults) flashes for a
-  // frame before the Brand Architect default lands. Ready once: a beta lesson is
+  // VTC program's first module (from the seed defaults) flashes for a
+  // frame before the VTC default lands. Ready once: a beta lesson is
   // selected, OR an admin deep-linked to a program module, OR the beta catalog
   // has loaded and is genuinely empty.
   const programDeepLink = isAdmin && (searchParams.get('m') !== null || searchParams.get('id') !== null);
@@ -351,7 +351,7 @@ function ModulesInner() {
 
   // Open the right lesson, in priority order: a ?id= deep link (what the resume
   // links in /select and the welcome-back card point at), then the lesson you
-  // were last on, then the first one — so nobody auto-lands on a Goh Consulting
+  // were last on, then the first one — so nobody auto-lands on a VTC
   // module. Runs once (a ref, not `!betaSelId`) so admins can then click a
   // program module without being yanked back. Admins arriving via a program
   // deep-link (?m= / ?id=) keep it.
@@ -463,7 +463,7 @@ function ModulesInner() {
             ← Menu
           </button>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '9px', letterSpacing: '0.35em', textTransform: 'uppercase', fontWeight: 700, color: 'rgba(201,164,85,0.35)', marginBottom: 4 }}>
-            Brand Architect
+            VTC
           </p>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '11px', color: 'rgba(201,164,85,0.4)' }}>
             {/* No count until the catalog lands — "0 modules" for a frame reads
@@ -473,9 +473,9 @@ function ModulesInner() {
         </div>
 
         <div style={{ flex: 1, padding: '8px 0 24px' }}>
-          {/* Members see the Brand Architect catalog as their whole library.
-              Admins keep the editable Brand Architect Beta copy at the TOP, then
-              the Goh Consulting program catalog under a "Program Modules" heading. */}
+          {/* Members see the VTC catalog as their whole library.
+              Admins keep the editable VTC Beta copy at the TOP, then
+              the VTC program catalog under a "Program Modules" heading. */}
           {isMember && (betaLoading ? (
             <p style={sidebarLoading}>Loading…</p>
           ) : (

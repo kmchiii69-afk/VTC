@@ -1458,7 +1458,7 @@ export default function AssistantPage() {
           <img src="/onboarding/goh-logo.png" alt="VTC" style={{ width: 36, height: 36, objectFit: 'contain', flexShrink: 0 }} />
           <div style={{ minWidth: 0 }}>
             <div className="font-serif" style={{ fontSize: '1.05rem', fontWeight: 400, color: '#f0e8d4', lineHeight: 1.05 }}>VTC</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 700, color: 'rgba(201,164,85,0.55)', marginTop: 3 }}>SooWei AI</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 9, letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 700, color: 'rgba(201,164,85,0.55)', marginTop: 3 }}>VTC Advisor</div>
           </div>
         </div>
 

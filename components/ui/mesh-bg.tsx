@@ -15,7 +15,7 @@ type MeshGradientType = React.ComponentType<{
 
 let _Comp: MeshGradientType | null = null;
 
-const COLORS = ['#000000', '#0c0904', '#1e1608', '#c9a455', '#000000'];
+const COLORS = ['#000000', '#160705', '#8a1a14', '#F55A4E', '#000000'];
 
 // Static fallback that visually matches the live gradient. Rendered while the
 // shader is still loading AND whenever a video player is on screen, so the

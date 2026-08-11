@@ -21,7 +21,7 @@ const CREAM = '#f0e8d4';
 // entirely rather than greyed out when locked — they only make sense for the
 // members they belong to (the weekly KPI report is a Creative Specialist thing).
 const OPTIONS = [
-  { id: 'assistant',  label: 'SooWei AI', href: '/SooWei-AI', feature: null as string | null, exclusive: false },
+  { id: 'assistant',  label: 'VTC Advisor', href: '/SooWei-AI', feature: null as string | null, exclusive: false },
   { id: 'recordings', label: 'Recordings',   href: '/hub',       feature: 'recordings' as string | null, exclusive: false },
   { id: 'roadmap',    label: 'Roadmap',      href: '/roadmap',   feature: 'roadmap' as string | null, exclusive: false },
   { id: 'sops',       label: 'SOP Library',  href: '/sops',      feature: 'sops' as string | null, exclusive: false },

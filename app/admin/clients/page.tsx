@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { THEME as T } from '@/lib/theme';
 import { AdminNav } from '@/components/ui/admin-nav';
 import { HEALTH_VALUES, HEALTH_LABEL, type ClientHealth } from '@/lib/vtc-clients';
@@ -27,6 +28,7 @@ export default function ClientHealthPage() {
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [onlyRisk, setOnlyRisk] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     fetch('/api/admin/clients', { cache: 'no-store' })
@@ -109,7 +111,7 @@ export default function ClientHealthPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {list.map((r) => (
-                <div key={r.email} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'center', padding: '12px 16px', background: T.card, border: `1px solid ${r.health === 'defcon' ? T.accent : r.health === 'at_risk' ? T.borderStrong : T.border}`, borderRadius: 12, backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}>
+                <div key={r.email} onClick={() => router.push(`/admin/clients/${encodeURIComponent(r.email)}`)} style={{ cursor: 'pointer', display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'center', padding: '12px 16px', background: T.card, border: `1px solid ${r.health === 'defcon' ? T.accent : r.health === 'at_risk' ? T.borderStrong : T.border}`, borderRadius: 12, backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}>
                   <div style={{ minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                       <span style={{ width: 9, height: 9, borderRadius: '50%', background: HEALTH_COLOR[r.health], flexShrink: 0 }} />
@@ -127,7 +129,7 @@ export default function ClientHealthPage() {
                           </>}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                  <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                     {isAdmin && (
                       <select value={r.accountManager ?? ''} disabled={busy === r.email} onChange={(e) => patch(r.email, { accountManagerEmail: e.target.value || null })} style={sel}>
                         <option value="">Assign AM…</option>

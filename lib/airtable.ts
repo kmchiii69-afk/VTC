@@ -152,3 +152,14 @@ export async function getClientByEmail(email: string): Promise<ClientRecord | nu
 export function getActiveClients(): Promise<ClientRecord[]> {
   return getClients({ filterByFormula: `{Delivery Status (manual update)}='Active'` });
 }
+
+/** Full client record (ALL fields, not just curated) — for the admin drill-down
+ *  that shows everything Airtable holds, including the onboarding form answers. */
+export async function getClientFullByEmail(email: string): Promise<AirtableRecord | null> {
+  const safe = email.toLowerCase().replace(/['"\\]/g, "");
+  const rows = await airtableList(AT_TABLES.clients, {
+    filterByFormula: `LOWER({Email})='${safe}'`,
+    maxRecords: 1,
+  });
+  return rows[0] ?? null;
+}

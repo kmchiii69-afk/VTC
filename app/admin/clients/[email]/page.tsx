@@ -21,7 +21,7 @@ interface Video {
 }
 interface Note { id: string; body: string; kind: 'note' | 'todo'; done: boolean; author: string; created_at: string; }
 interface Detail {
-  email: string; name: string; plan: string | null; health: string; status: string;
+  email: string; name: string; plan: string | null; health: string; effectiveHealth: string; status: string;
   accountManager: string | null; fields: Record<string, string>; videos: Video[];
 }
 
@@ -96,7 +96,7 @@ export default function ClientDetailPage() {
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{ width: 11, height: 11, borderRadius: '50%', background: HCOLOR[d.health] }} />
+                  <span style={{ width: 11, height: 11, borderRadius: '50%', background: HCOLOR[d.effectiveHealth] ?? HCOLOR[d.health] }} />
                   <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, fontSize: 'clamp(1.8rem,4vw,2.5rem)', margin: 0 }}>{d.name}</h1>
                 </div>
                 <div style={{ color: T.inkDim, fontSize: 13, marginTop: 4 }}>{d.email}{d.plan ? ` · ${d.plan}` : ''}</div>

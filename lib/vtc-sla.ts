@@ -84,3 +84,16 @@ export function worstStatus(list: SlaStatus[]): SlaStatus {
   if (list.some((s) => s === "on_track")) return "on_track";
   return "none";
 }
+
+// SLA status → the health it implies. Overdue work is a Defcon; at-risk work
+// puts the client at_risk; otherwise healthy.
+export function healthFromStatus(s: SlaStatus): "healthy" | "at_risk" | "defcon" {
+  return s === "overdue" ? "defcon" : s === "at_risk" ? "at_risk" : "healthy";
+}
+
+// SLA auto-escalates health but never calms it below what an AM set manually.
+const HEALTH_RANK: Record<string, number> = { healthy: 0, at_risk: 1, defcon: 2 };
+export function worseHealth(a: string, b: string): "healthy" | "at_risk" | "defcon" {
+  const worst = (HEALTH_RANK[a] ?? 0) >= (HEALTH_RANK[b] ?? 0) ? a : b;
+  return (worst === "defcon" ? "defcon" : worst === "at_risk" ? "at_risk" : "healthy");
+}

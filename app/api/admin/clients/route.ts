@@ -4,7 +4,7 @@ import { getActiveClients } from "@/lib/airtable";
 import { getAllClientStates, upsertClientState, type ClientStateFields } from "@/lib/vtc-clients";
 import { getAllVideos, stagesFor, currentStage, type VtcVideo } from "@/lib/vtc-videos";
 import { getSlaHours } from "@/lib/vtc-settings";
-import { computeSla, worstStatus, type SlaStatus } from "@/lib/vtc-sla";
+import { computeSla, worstStatus, healthFromStatus, worseHealth, type SlaStatus } from "@/lib/vtc-sla";
 
 // AM client-health board. Admin sees everyone; an account manager (team_role
 // 'am') sees their own pod. Merges Airtable client identity (read-only) with the
@@ -75,6 +75,9 @@ export async function GET() {
     .map((c) => {
       const email = (c.fields.Email ?? "").toLowerCase().trim();
       const st = states.get(email);
+      const vids = byClient.get(email) ?? [];
+      const sla = slaFor(vids);
+      const manual = st?.health ?? "healthy";
       return {
         email,
         name: c.fields.Name ?? email,
@@ -82,10 +85,11 @@ export async function GET() {
         deliveryStatus: c.fields["Delivery Status (manual update)"] ?? null,
         slackChannelId: st?.slack_channel_id ?? c.fields["Slack Channel ID"] ?? null,
         accountManager: st?.account_manager_email ?? null,
-        health: st?.health ?? "healthy",
+        health: manual, // AM-set floor
+        effectiveHealth: worseHealth(manual, healthFromStatus(sla.status)), // SLA auto-escalates
         status: st?.status ?? "active",
-        signal: signalFor(byClient.get(email) ?? []),
-        sla: slaFor(byClient.get(email) ?? []),
+        signal: signalFor(vids),
+        sla,
       };
     })
     .filter((r) => r.email)

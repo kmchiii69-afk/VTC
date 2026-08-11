@@ -4,7 +4,7 @@ import { getClientFullByEmail } from "@/lib/airtable";
 import { getAllClientStates } from "@/lib/vtc-clients";
 import { getClientVideos, stagesFor, currentStage } from "@/lib/vtc-videos";
 import { getSlaHours } from "@/lib/vtc-settings";
-import { computeSla } from "@/lib/vtc-sla";
+import { computeSla, worstStatus, healthFromStatus, worseHealth } from "@/lib/vtc-sla";
 
 // Full client drill-down for the AM board: operational state + their videos +
 // everything Airtable holds (incl. the onboarding form answers). Admin sees
@@ -47,11 +47,14 @@ export async function GET(req: NextRequest) {
     return { ...v, stages, currentKey: cur?.key ?? null, sla: computeSla(v, stages, cur?.key ?? null, slaHours) };
   });
 
+  const manual = state?.health ?? "healthy";
+  const worst = worstStatus(vids.map((v) => v.sla.status));
   return NextResponse.json({
     email,
     name: (rawFields.Name as string) ?? email,
     plan: state?.plan ?? (rawFields["Client Plan"] as string) ?? null,
-    health: state?.health ?? "healthy",
+    health: manual,
+    effectiveHealth: worseHealth(manual, healthFromStatus(worst)),
     status: state?.status ?? "active",
     accountManager: state?.account_manager_email ?? null,
     fields,

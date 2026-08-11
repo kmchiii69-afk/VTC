@@ -17,3 +17,13 @@ create table if not exists vtc_notes (
   created_at   timestamptz not null default now()
 );
 create index if not exists vtc_notes_client_email_idx on vtc_notes (client_email);
+
+-- Weekly CSM tracker (digitized Google sheet): one row per client per week.
+create table if not exists vtc_weekly (
+  client_email text not null,
+  week_start   date not null,                 -- Monday of the week
+  days         jsonb not null default '{}'::jsonb, -- { mon, tue, wed, thu, fri }
+  posted       text,                           -- Posted? / reason
+  updated_at   timestamptz not null default now(),
+  primary key (client_email, week_start)
+);

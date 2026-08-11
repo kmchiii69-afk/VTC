@@ -8,6 +8,7 @@ import { THEME as T } from '@/lib/theme';
 const LINKS = [
   { href: '/admin/production', label: 'Production' },
   { href: '/admin/clients', label: 'Client Health' },
+  { href: '/admin/weekly', label: 'Weekly' },
   { href: '/admin/team', label: 'Seats' },
   { href: '/admin/settings', label: 'Settings' },
 ];

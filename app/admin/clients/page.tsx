@@ -16,7 +16,7 @@ interface Signal { total: number; active: number; waitingOnClient: number; curre
 interface Row {
   email: string; name: string; plan: string | null; deliveryStatus: string | null;
   slackChannelId: string | null; accountManager: string | null; health: ClientHealth;
-  status: string; signal: Signal; sla?: { status: string; overdue: number; atRisk: number };
+  effectiveHealth: ClientHealth; status: string; signal: Signal; sla?: { status: string; overdue: number; atRisk: number };
 }
 interface AmOption { email: string; name: string; }
 
@@ -30,7 +30,18 @@ export default function ClientHealthPage() {
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [onlyRisk, setOnlyRisk] = useState(false);
+  const [eodMsg, setEodMsg] = useState<string | null>(null);
   const router = useRouter();
+
+  const sendEod = async () => {
+    setEodMsg('Sending…');
+    try {
+      const r = await fetch('/api/cron/eod-report', { method: 'POST' });
+      const d = await r.json();
+      setEodMsg(r.ok ? `Sent — ${d.flagged} flagged` : (d.error || 'Failed'));
+    } catch { setEodMsg('Failed'); }
+    setTimeout(() => setEodMsg(null), 4000);
+  };
 
   useEffect(() => {
     fetch('/api/admin/clients', { cache: 'no-store' })
@@ -55,11 +66,11 @@ export default function ClientHealthPage() {
     } catch (e) { setErr(e instanceof Error ? e.message : 'Failed'); } finally { setBusy(null); }
   };
 
-  const shown = onlyRisk ? rows.filter((r) => r.health !== 'healthy') : rows;
+  const shown = onlyRisk ? rows.filter((r) => r.effectiveHealth !== 'healthy') : rows;
   const counts = useMemo(() => ({
-    healthy: rows.filter((r) => r.health === 'healthy').length,
-    at_risk: rows.filter((r) => r.health === 'at_risk').length,
-    defcon: rows.filter((r) => r.health === 'defcon').length,
+    healthy: rows.filter((r) => r.effectiveHealth === 'healthy').length,
+    at_risk: rows.filter((r) => r.effectiveHealth === 'at_risk').length,
+    defcon: rows.filter((r) => r.effectiveHealth === 'defcon').length,
   }), [rows]);
 
   // Group by account manager.
@@ -71,7 +82,7 @@ export default function ClientHealthPage() {
     }
     // At-risk/defcon float to the top within each pod.
     const rank: Record<string, number> = { defcon: 0, at_risk: 1, healthy: 2 };
-    for (const list of m.values()) list.sort((a, b) => rank[a.health] - rank[b.health]);
+    for (const list of m.values()) list.sort((a, b) => rank[a.effectiveHealth] - rank[b.effectiveHealth]);
     return [...m.entries()];
   }, [shown]);
 
@@ -99,6 +110,11 @@ export default function ClientHealthPage() {
           <button onClick={() => setOnlyRisk((v) => !v)} style={{ marginLeft: 'auto', padding: '8px 14px', borderRadius: 999, border: `1px solid ${onlyRisk ? T.accent : T.border}`, background: onlyRisk ? T.accent : 'transparent', color: onlyRisk ? T.accentInk : T.accentSoft, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>
             {onlyRisk ? 'Showing at-risk only' : 'Show at-risk only'}
           </button>
+          {isAdmin && (
+            <button onClick={sendEod} style={{ padding: '8px 14px', borderRadius: 999, border: `1px solid ${T.border}`, background: 'transparent', color: T.accentSoft, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>
+              {eodMsg ?? 'Send EOD report'}
+            </button>
+          )}
         </div>
 
         {err && <p style={{ color: T.accent, marginBottom: 16 }}>{err}</p>}
@@ -112,10 +128,10 @@ export default function ClientHealthPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {list.map((r) => (
-                <div key={r.email} onClick={() => router.push(`/admin/clients/${encodeURIComponent(r.email)}`)} style={{ cursor: 'pointer', display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'center', padding: '12px 16px', background: T.card, border: `1px solid ${r.health === 'defcon' ? T.accent : r.health === 'at_risk' ? T.borderStrong : T.border}`, borderRadius: 12, backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}>
+                <div key={r.email} onClick={() => router.push(`/admin/clients/${encodeURIComponent(r.email)}`)} style={{ cursor: 'pointer', display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'center', padding: '12px 16px', background: T.card, border: `1px solid ${r.effectiveHealth === 'defcon' ? T.accent : r.effectiveHealth === 'at_risk' ? T.borderStrong : T.border}`, borderRadius: 12, backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}>
                   <div style={{ minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                      <span style={{ width: 9, height: 9, borderRadius: '50%', background: HEALTH_COLOR[r.health], flexShrink: 0 }} />
+                      <span style={{ width: 9, height: 9, borderRadius: '50%', background: HEALTH_COLOR[r.effectiveHealth], flexShrink: 0 }} title={r.effectiveHealth !== r.health ? `Auto-escalated to ${r.effectiveHealth} by SLA` : undefined} />
                       <span style={{ fontSize: 14.5, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.name}</span>
                       {r.plan && <span style={chip(r.plan)}>{r.plan}</span>}
                       {r.status !== 'active' && <span style={chip(r.status, T.accentSoft)}>{r.status}</span>}

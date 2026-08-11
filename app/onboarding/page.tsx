@@ -16,7 +16,6 @@ import { ContractSigning } from '@/components/onboarding/contract-signing';
 import { Markdown } from '@/components/ui/markdown';
 import { DEFAULT_RESOURCES } from '@/lib/resources-data';
 import { ONBOARDING_FORMS } from '@/lib/onboarding-forms';
-import { skipsOnboarding } from '@/lib/client-tags';
 import { isEmbeddable, toEmbedUrl } from '@/lib/doc-embed';
 
 // Onboarding steps whose document opens as a native in-app page (not a Google
@@ -173,7 +172,7 @@ export default function OnboardingPage() {
     fetch('/api/me/onboarding', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
       .then((d: { email?: string; completed: string[]; onboardedAt: number | null; contractTier: string | null; tags?: string[]; uploads: Record<string, UploadFile[]>; callLink: string; variant?: OnboardingVariant }) => {
-        if (d.onboardedAt) { router.replace('/select'); return; }
+        if (d.onboardedAt) { router.replace('/production'); return; }
         if (d.email) setMeEmail(d.email);
         const v: OnboardingVariant = d.variant === 'creative' ? 'creative' : 'default';
         setVariant(v);
@@ -213,7 +212,7 @@ export default function OnboardingPage() {
         const d = await fetch('/api/me/onboarding', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null));
         if (!alive || !d) return;
         // A skip-onboarding tag auto-completes onboarding server-side → leave.
-        if (d.onboardedAt) { router.replace(skipsOnboarding(d.tags) ? '/roadmap' : '/select'); return; }
+        if (d.onboardedAt) { router.replace('/production'); return; }
         setContractTier(d.contractTier ?? null);
         setCallLink(d.callLink ?? null);
         // An admin can apply the Creative Specialist tag mid-wizard, which swaps
@@ -464,8 +463,8 @@ export default function OnboardingPage() {
         <OutroScreen
           stage={outro}
           variant={variant}
-          onNext={() => (variant === 'creative' ? router.replace('/roadmap') : setOutro('prepare'))}
-          onFinish={() => router.replace('/roadmap')}
+          onNext={() => (variant === 'creative' ? router.replace('/production') : setOutro('prepare'))}
+          onFinish={() => router.replace('/production')}
         />
       </Shell>
     );

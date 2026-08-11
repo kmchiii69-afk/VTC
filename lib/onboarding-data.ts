@@ -46,101 +46,60 @@ export interface OnboardingStep {
   phase?: 0 | 1;
 }
 
-// The welcome screen shown first — a walkthrough video + the master onboarding doc.
+// The welcome screen shown first — a short walkthrough of how onboarding works.
 export const ONBOARDING_WELCOME = {
-  title: 'Welcome to Brand Architect',
-  body: "Here's everything you need to get started. Watch the quick walkthrough below, then work through each step in order — we'll unlock the next one as you go.",
-  video: 'https://www.loom.com/share/32bba321d59140139bb67f42f4ce8dc6',
-  links: [
-    {
-      label: 'Open the Onboarding Doc',
-      url: 'https://docs.google.com/document/d/1AW56BCSqoaVKy4sCfoTISOL1w1W44q3r_l2SQd6hUqg/edit?usp=sharing',
-    },
-  ] as OnboardingLink[],
+  title: 'Welcome to VTC',
+  body: "Let's get you set up for your first video. Work through each step in order — the strategy call unlocks once the essentials are done, then we hit the ground running.",
+  video: 'https://www.loom.com/share/placeholder', // TODO: VTC onboarding walkthrough Loom
+  links: [] as OnboardingLink[],
 };
 
-// The onboarding wizard now covers roadmap Week 1 (phase 0) and Week 2 (phase 1)
-// — see lib/roadmap-data.ts, which splits these steps into those two phases.
-// Source of truth: the client's "BA Roadmap" sheet (Aug 2026).
+// VTC day-1 onboarding checklist. Booking the strategy call sits LAST, so the
+// sequential-unlock rule (isStepUnlocked) keeps it locked until Slack, the
+// agreement, the onboarding form and equipment are all done — the agreed gate.
+// Links are placeholders; swap for the real VTC URLs.
 export const ONBOARDING_STEPS: OnboardingStep[] = [
   {
-    id: 'select-contract',
+    id: 'join-slack',
     phase: 0,
-    title: 'Sign the Contract',
-    subtitle: 'Choose your Brand Architect package and sign.',
-    body: 'Select the contract that matches your package and complete it. We\'ll record which one you signed.',
-    contracts: [
-      { label: '4 Month Contract', tier: '14k', url: 'https://form.pandadoc.com/form/af6odgFm24ahVozFBTXZsT' },
-      { label: '6 Month Contract', tier: '25k', url: 'https://form.pandadoc.com/form/gr5sg2XhbHydKcPfm53riL' },
-    ],
-    note: 'Pick the one you were enrolled on — reach out in the Discord if you\'re unsure.',
+    title: 'Join your Slack channel',
+    subtitle: 'Your direct line to the whole VTC team.',
+    body: "Accept your Slack invite and say hello in your channel — this is where your team, scripts, and updates live.",
+    links: [{ label: 'Open Slack', url: 'https://slack.com' }], // TODO: per-client Slack invite
+    note: "Can't find your invite? Reply to your welcome email and we'll resend it.",
   },
   {
-    id: 'meet-team',
+    id: 'sign-agreement',
     phase: 0,
-    title: 'Meet the C-Suite Team',
-    subtitle: 'Get to know the team behind your results.',
-    body: "Watch this quick intro to meet the Goh Consulting C-Suite team you'll be working with.",
-    video: 'https://www.loom.com/share/a8cba596836145a187ac5fb353edaf8f',
+    title: 'Sign your agreement',
+    subtitle: 'Locks in your plan so we can start.',
+    body: 'Review and sign your service agreement. Takes two minutes.',
+    links: [{ label: 'Sign the agreement', url: 'https://form.pandadoc.com/placeholder' }], // TODO: VTC agreement
   },
   {
-    id: 'join-discord',
+    id: 'onboarding-form',
     phase: 0,
-    title: 'Join the Discord & Introduce Yourself',
-    subtitle: 'Your home base for support, community, and announcements.',
-    body: 'Join the Brand Architect Discord — this is where you\'ll get support, meet the community, and see important updates.\n\nOnce you\'re in, post a quick introduction: who you are, what your brand is about, and what you want to achieve in the program. Here\'s a great example to model yours on:',
-    links: [{ label: 'Join Here', url: 'https://discord.gg/SkW9zak6EK' }],
-    images: ['/onboarding/community-intro-example-3.png'],
+    title: 'Fill out your onboarding form',
+    subtitle: 'Everything we need to write in your voice.',
+    body: "Complete your onboarding form — your ICP, offer, numbers, and best-performing content. This is what your strategist and scriptwriter build from, so the more detail the better.",
+    links: [{ label: 'Open the onboarding form', url: 'https://airtable.com/placeholder' }], // TODO: Airtable onboarding form
   },
   {
-    id: 'calendar-calls',
+    id: 'order-equipment',
     phase: 0,
-    title: 'Group Calls Added to Calendar',
-    subtitle: 'Lock in the live calls so you never miss one.',
-    body: 'Add each weekly group call to your calendar — click each one to save it.',
-    links: [
-      { label: 'Monday — Content Mastermind w/ Yash', url: 'https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=MG9xMHExbTZjczRldGZxbzN0bjRhMTY3aWlfMjAyNjA0MjdUMTYwMDAwWiBjXzNmOGZiZjkyOGEwNGQwNDAwNjZiYjAxMTdjNTE1ODU2ZDJkYWFhOWIzNDJiNDhlZmYyNzNhM2QyZmUwZTgzM2ZAZw&tmsrc=c_3f8fbf928a04d040066bb0117c515856d2daaa9b342b48eff273a3d2fe0e833f%40group.calendar.google.com&scp=ALL' },
-      { label: 'Wednesday — Brand Architect w/ SooWei', url: 'https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=YWt2Y2UyOXR0NzgzdWdpbGl2OGRiNTBhanBfMjAyNTExMTlUMTcwMDAwWiBjXzNmOGZiZjkyOGEwNGQwNDAwNjZiYjAxMTdjNTE1ODU2ZDJkYWFhOWIzNDJiNDhlZmYyNzNhM2QyZmUwZTgzM2ZAZw&tmsrc=c_3f8fbf928a04d040066bb0117c515856d2daaa9b342b48eff273a3d2fe0e833f%40group.calendar.google.com&scp=ALL' },
-      { label: 'Scripting Mastermind w/ Aidan', url: 'https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=dDBlbG85cmRncWZqdmoyYnQ3Z2h1Z3JndjhfMjAyNjA0MjRUMTYwMDAwWiBjXzNmOGZiZjkyOGEwNGQwNDAwNjZiYjAxMTdjNTE1ODU2ZDJkYWFhOWIzNDJiNDhlZmYyNzNhM2QyZmUwZTgzM2ZAZw&tmsrc=c_3f8fbf928a04d040066bb0117c515856d2daaa9b342b48eff273a3d2fe0e833f%40group.calendar.google.com&scp=ALL' },
-    ],
+    title: 'Order your equipment',
+    subtitle: 'Get record-ready.',
+    body: 'Order the recommended kit so your footage meets standard from video one. Links below.',
+    links: [{ label: 'Recommended equipment list', url: 'https://www.amazon.com/placeholder' }], // TODO: VTC equipment list
+    note: 'Already have a good setup? Send us a test clip in Slack and we\'ll confirm it works.',
   },
   {
-    id: 'complete-forms',
+    id: 'book-strategy-call',
     phase: 0,
-    title: 'Complete Onboarding Forms',
-    subtitle: 'Tell us about you so we can tailor your experience.',
-    body: 'Fill out both onboarding forms below so our team has everything we need to get you started. Both must be submitted to continue.',
-    todo: 'BA Roadmap sheet lists a "Data Collection Form" resource for this step — not built yet.',
-  },
-
-  // ── Week 2 ────────────────────────────────────────────────────────────────
-  {
-    id: 'offer-foundation',
-    phase: 1,
-    title: 'Watch Offer Modules',
-    subtitle: 'Sharpen your offer before you document it.',
-    body: 'Watch the “Sharpening the Offer” modules below — they set you up to nail the Market Research and Offer docs in the next step.',
-    todo: 'BA Roadmap sheet lists an "AI Offer Creation" resource for this step — no link supplied yet.',
-  },
-  {
-    id: 'submit-docs',
-    phase: 1,
-    title: 'Submit Market Research & Offer Docs For Approval',
-    subtitle: 'Fill both docs out, then upload them for the team to review.',
-    body: 'Fill out your Market Research doc and your Offer doc using the templates below. Once they\'re complete, export them as PDFs and upload them here for approval.',
-    links: [
-      { label: 'Market Research Doc', url: 'https://docs.google.com/document/d/1Xg3qMiem2dqXRjzWN9hrHTWpiecOjMoREZZNfOQpq5w/edit?usp=sharing' },
-      { label: 'Offer Doc', url: 'https://docs.google.com/document/d/181wHjQQ7QmktXgQzvZ4zD5jmLD7-PxQt0YGsmbfts8M/edit?usp=sharing' },
-    ],
-    requiresUpload: true,
-  },
-  {
-    id: 'onboarding-call',
-    phase: 1,
-    title: 'Onboarding Call with Kim',
-    subtitle: 'The final step — meet your CSM.',
-    body: 'Book your onboarding call with your Client Success Manager to kick things off properly.',
-    links: [{ label: 'Book your onboarding call', url: 'https://calendly.com/kimchi-gohconsulting/onboarding-strategy' }],
+    title: 'Book your strategy call',
+    subtitle: 'The kickoff — we map your first videos.',
+    body: 'Last step. Book your strategy call and we\'ll walk you through your video ideas and set your first-video timeline. (Unlocks once the steps above are done.)',
+    links: [{ label: 'Book your strategy call', url: 'https://calendly.com/placeholder/strategy-call' }], // TODO: VTC strategy-call Calendly
   },
 ];
 
@@ -151,26 +110,23 @@ export const onboardingStepsInPhase = (phase: 0 | 1): OnboardingStep[] =>
 // One-line "why this matters" shown as an accent under each step's headline —
 // keeps clients motivated by connecting every step to the outcome.
 export const STEP_WHY: Record<string, string> = {
-  'select-contract': 'Locks in your package so we kick off the right scope of work for you, right away.',
-  'meet-team': "Knowing who's in your corner — and how the team operates — sets the tone for everything ahead.",
-  'join-discord': "It's your home base, and a quick hello gets the community behind you from day one.",
-  'calendar-calls': 'The weekly group calls are where the fastest progress happens — never miss one.',
-  'complete-forms': 'Your answers let us tailor your strategy, content, and calls to you — no generic advice.',
-  'offer-foundation': 'A sharp offer is the foundation everything else is built on — tighten it before you document and market it.',
-  'submit-docs': 'We review your foundations before you build on them — so you never scale the wrong thing.',
-  'onboarding-call': 'Meet your Client Success Manager and map your personal game plan — where it all comes together.',
+  'join-slack': "It's your direct line to the whole team — nothing slips when we're all in one place.",
+  'sign-agreement': 'Locks in your plan so we can kick off production straight away.',
+  'onboarding-form': 'Your answers are what we script and strategise from — the more detail, the sharper your videos.',
+  'order-equipment': 'Good footage from day one means faster edits and better videos — no re-records.',
+  'book-strategy-call': 'Where we map your first videos and set the timeline — the real kickoff.',
 };
 
 export const ONBOARDING_STEP_IDS = ONBOARDING_STEPS.map((s) => s.id);
 export const TOTAL_ONBOARDING_STEPS = ONBOARDING_STEPS.length;
 
-// The "Hop on Onboarding Call" step (id 'onboarding-call') shows a Calendly link
-// that depends on the client's ICP tag. Resolved per-client server-side.
-export const ONBOARDING_CALL_STEP_ID = 'onboarding-call';
+// The strategy-call step shows a Calendly link (booking is gated until the
+// earlier steps are complete). Resolved per-client server-side.
+export const ONBOARDING_CALL_STEP_ID = 'book-strategy-call';
 export const ONBOARDING_CALL_LINKS = {
-  default: 'https://calendly.com/kimchi-gohconsulting/onboarding-strategy',
-  icp: 'https://calendly.com/kimchi-gohconsulting/onboarding-strategy',
-  low_icp: 'https://calendly.com/kimchi-gohconsulting/funnel-leakage',
+  default: 'https://calendly.com/placeholder/strategy-call', // TODO: VTC strategy-call Calendly
+  icp: 'https://calendly.com/placeholder/strategy-call',
+  low_icp: 'https://calendly.com/placeholder/strategy-call',
 };
 
 export function resolveOnboardingCallLink(tags: string[] | null | undefined): string {

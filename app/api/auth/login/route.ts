@@ -76,8 +76,8 @@ export async function POST(req: NextRequest) {
 
   // ── Step 3: mint the session ──────────────────────────────────────────────
   try {
-    const token = await signToken({ email: user.email, role: user.role });
-    const res = NextResponse.json({ email: user.email, role: user.role, name: user.name, avatar: user.avatar, activity_level: level });
+    const token = await signToken({ email: user.email, role: user.role, teamRole: user.team_role ?? null });
+    const res = NextResponse.json({ email: user.email, role: user.role, teamRole: user.team_role ?? null, name: user.name, avatar: user.avatar, activity_level: level });
     res.cookies.set(COOKIE_NAME, token, COOKIE_OPTS);
     return res;
   } catch (e) {

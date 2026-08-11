@@ -48,6 +48,7 @@ export interface User {
   features: string[]; // gateable portal feature ids; null/empty => DEFAULT_FEATURES
   onboarded_at: number | null; // ms epoch when onboarding finished; null = new client
   contract_tier: string | null; // which Brand Architect contract the client signed ('14k' | '25k')
+  team_role: string | null; // internal seat (csm/am, strategist, scriptwriter, qa, editor, …); null = client
 }
 
 export type PublicUser = Omit<User, 'password_hash'>;

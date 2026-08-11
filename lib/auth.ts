@@ -23,6 +23,9 @@ export const COOKIE_OPTS = {
 export interface AuthPayload {
   email: string;
   role: 'user' | 'admin';
+  // Internal seat (account manager, editor, scriptwriter, …). null/undefined for
+  // regular clients. Stamped at login; admins see everything regardless.
+  teamRole?: string | null;
 }
 
 export async function signToken(payload: AuthPayload): Promise<string> {
@@ -38,7 +41,11 @@ export async function verifyToken(token: string): Promise<AuthPayload | null> {
     const { payload } = await jwtVerify(token, SECRET);
     // Reject tokens minted under an older session version (global logout).
     if (payload.v !== TOKEN_VERSION) return null;
-    return { email: payload.email as string, role: payload.role as 'user' | 'admin' };
+    return {
+      email: payload.email as string,
+      role: payload.role as 'user' | 'admin',
+      teamRole: (payload.teamRole as string | null | undefined) ?? null,
+    };
   } catch {
     return null;
   }

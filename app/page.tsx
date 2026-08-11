@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { track } from '@vercel/analytics';
 import { WavesBackground } from '@/components/ui/waves-shader';
+import { homeRouteFor, isTeamRole } from '@/lib/vtc-roles';
 
 function MeshGradientWrapper() {
   return (
@@ -31,13 +32,17 @@ export default function LoginPage() {
   // everyone else lands on /select. Returns false if not signed in.
   const routeAfterAuth = async (): Promise<boolean> => {
     try {
-      const me = await fetch('/api/auth/me').then((r) => (r.ok ? r.json() : null));
+      const me = await fetch('/api/me/role').then((r) => (r.ok ? r.json() : null));
       if (!me) return false;
-      if (me.role === 'admin') { router.push('/select'); return true; }
+      // Admins → board; internal seats → their queue.
+      if (me.role === 'admin' || isTeamRole(me.teamRole)) {
+        router.push(homeRouteFor(me.role, me.teamRole));
+        return true;
+      }
+      // Clients onboard first, then land on their production roadmap.
       const ob = await fetch('/api/me/onboarding', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null));
       if (!ob || !ob.onboardedAt) { router.push('/onboarding'); return true; }
-      // Everyone who's onboarded lands on the content select screen.
-      router.push('/select');
+      router.push('/production');
       return true;
     } catch {
       return false;

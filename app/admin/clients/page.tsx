@@ -89,13 +89,13 @@ export default function ClientHealthPage() {
         {/* Summary + filter */}
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', marginBottom: 22 }}>
           {(['healthy', 'at_risk', 'defcon'] as ClientHealth[]).map((h) => (
-            <span key={h} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 10, background: T.card, border: `1px solid ${T.border}` }}>
+            <span key={h} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 14px', borderRadius: 999, background: T.card, border: `1px solid ${T.border}` }}>
               <span style={{ width: 9, height: 9, borderRadius: '50%', background: HEALTH_COLOR[h] }} />
               <span style={{ fontSize: 13, fontWeight: 700 }}>{counts[h]}</span>
               <span style={{ fontSize: 12, color: T.inkDim }}>{HEALTH_LABEL[h]}</span>
             </span>
           ))}
-          <button onClick={() => setOnlyRisk((v) => !v)} style={{ marginLeft: 'auto', padding: '8px 14px', borderRadius: 10, border: `1px solid ${onlyRisk ? T.accent : T.border}`, background: onlyRisk ? T.accent : 'transparent', color: onlyRisk ? T.accentInk : T.accentSoft, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>
+          <button onClick={() => setOnlyRisk((v) => !v)} style={{ marginLeft: 'auto', padding: '8px 14px', borderRadius: 999, border: `1px solid ${onlyRisk ? T.accent : T.border}`, background: onlyRisk ? T.accent : 'transparent', color: onlyRisk ? T.accentInk : T.accentSoft, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>
             {onlyRisk ? 'Showing at-risk only' : 'Show at-risk only'}
           </button>
         </div>

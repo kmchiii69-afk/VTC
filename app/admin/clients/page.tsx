@@ -6,6 +6,7 @@ import { THEME as T } from '@/lib/theme';
 import { AdminNav } from '@/components/ui/admin-nav';
 import { Select } from '@/components/ui/select';
 import { HEALTH_VALUES, HEALTH_LABEL, type ClientHealth } from '@/lib/vtc-clients';
+import { SLA_COLOR } from '@/lib/vtc-sla';
 
 // AM client-health board — Jake's #1 gap: one view of every client grouped by
 // account manager, with a health flag + live delivery signal, so nobody
@@ -15,7 +16,7 @@ interface Signal { total: number; active: number; waitingOnClient: number; curre
 interface Row {
   email: string; name: string; plan: string | null; deliveryStatus: string | null;
   slackChannelId: string | null; accountManager: string | null; health: ClientHealth;
-  status: string; signal: Signal;
+  status: string; signal: Signal; sla?: { status: string; overdue: number; atRisk: number };
 }
 interface AmOption { email: string; name: string; }
 
@@ -120,6 +121,8 @@ export default function ClientHealthPage() {
                       {r.status !== 'active' && <span style={chip(r.status, T.accentSoft)}>{r.status}</span>}
                     </div>
                     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
+                      {r.sla && r.sla.overdue > 0 ? <span style={chip(`${r.sla.overdue} overdue`, SLA_COLOR.overdue)}>⏰ {r.sla.overdue} overdue</span>
+                        : r.sla && r.sla.atRisk > 0 ? <span style={chip(`${r.sla.atRisk} at risk`, SLA_COLOR.at_risk)}>{r.sla.atRisk} at risk</span> : null}
                       {r.signal.active === 0
                         ? <span style={chip('No video in production', T.accentSoft)}>No video in production</span>
                         : <>

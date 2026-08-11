@@ -3,6 +3,8 @@ import { getAuthUser } from "@/lib/auth";
 import { getClientFullByEmail } from "@/lib/airtable";
 import { getAllClientStates } from "@/lib/vtc-clients";
 import { getClientVideos, stagesFor, currentStage } from "@/lib/vtc-videos";
+import { getSlaHours } from "@/lib/vtc-settings";
+import { computeSla } from "@/lib/vtc-sla";
 
 // Full client drill-down for the AM board: operational state + their videos +
 // everything Airtable holds (incl. the onboarding form answers). Admin sees
@@ -18,10 +20,11 @@ export async function GET(req: NextRequest) {
   const email = decodeURIComponent(req.nextUrl.pathname.split("/").pop() || "").toLowerCase().trim();
   if (!email) return NextResponse.json({ error: "email required" }, { status: 400 });
 
-  const [full, states, videos] = await Promise.all([
+  const [full, states, videos, slaHours] = await Promise.all([
     getClientFullByEmail(email).catch(() => null),
     getAllClientStates(),
     getClientVideos(email),
+    getSlaHours(),
   ]);
   const state = states.get(email) ?? null;
 
@@ -41,7 +44,7 @@ export async function GET(req: NextRequest) {
   const vids = videos.map((v) => {
     const stages = stagesFor(v);
     const cur = currentStage(stages, v.progress);
-    return { ...v, stages, currentKey: cur?.key ?? null };
+    return { ...v, stages, currentKey: cur?.key ?? null, sla: computeSla(v, stages, cur?.key ?? null, slaHours) };
   });
 
   return NextResponse.json({

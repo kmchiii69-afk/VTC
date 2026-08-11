@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { THEME as T } from '@/lib/theme';
 import { AdminNav } from '@/components/ui/admin-nav';
 import { Select } from '@/components/ui/select';
+import { SlaBadge } from '@/components/ui/sla-badge';
 import { teamRoleLabel } from '@/lib/vtc-roles';
 
 // Full client drill-down (like the old app): overview stats, deliverables, and
@@ -16,7 +17,9 @@ interface Video {
   script_url: string | null; reference_url: string | null; recording_url: string | null;
   final_url: string | null; versions: Record<string, string>; stages: Stage[]; status_note: string | null;
   progress: Record<string, { done: true }>;
+  sla?: { status: string; hoursLeft: number | null };
 }
+interface Note { id: string; body: string; kind: 'note' | 'todo'; done: boolean; author: string; created_at: string; }
 interface Detail {
   email: string; name: string; plan: string | null; health: string; status: string;
   accountManager: string | null; fields: Record<string, string>; videos: Video[];
@@ -25,7 +28,7 @@ interface Detail {
 const HEALTH = ['healthy', 'at_risk', 'defcon'];
 const HLABEL: Record<string, string> = { healthy: 'Healthy', at_risk: 'At risk', defcon: 'Defcon' };
 const HCOLOR: Record<string, string> = { healthy: T.ok, at_risk: T.accentSoft, defcon: T.accent };
-const TABS = ['Overview', 'Onboarding', 'Deliverables', 'Summary'] as const;
+const TABS = ['Overview', 'Onboarding', 'Deliverables', 'Notes', 'Summary'] as const;
 
 const card: React.CSSProperties = { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: '16px 18px' };
 const link: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 10px', borderRadius: 999, border: `1px solid ${T.border}`, color: T.accentSoft, textDecoration: 'none', fontSize: 12 };
@@ -40,6 +43,8 @@ export default function ClientDetailPage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [noteText, setNoteText] = useState('');
 
   useEffect(() => {
     fetch(`/api/admin/clients/${encodeURIComponent(email)}`, { cache: 'no-store' })
@@ -59,6 +64,17 @@ export default function ClientDetailPage() {
       setD((p) => (p ? { ...p, health: x.client.health, status: x.client.status, accountManager: x.client.account_manager_email } : p));
     } catch (e) { setErr(e instanceof Error ? e.message : 'Failed'); } finally { setBusy(false); }
   };
+
+  const notesUrl = `/api/admin/clients/${encodeURIComponent(email)}/notes`;
+  const loadNotes = () => fetch(notesUrl, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).then((x) => { if (x?.notes) setNotes(x.notes); }).catch(() => {});
+  useEffect(() => { loadNotes(); }, [email]); // eslint-disable-line react-hooks/exhaustive-deps
+  const addNote = async (kind: 'note' | 'todo') => {
+    if (!noteText.trim()) return;
+    await fetch(notesUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body: noteText.trim(), kind }) });
+    setNoteText(''); loadNotes();
+  };
+  const toggleNote = async (id: string, done: boolean) => { await fetch(notesUrl, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, done }) }); loadNotes(); };
+  const delNote = async (id: string) => { await fetch(notesUrl, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) }); loadNotes(); };
 
   const stats = useMemo(() => {
     const v = d?.videos ?? [];
@@ -126,7 +142,10 @@ export default function ClientDetailPage() {
                     <div key={v.id} style={card}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
                         <div style={{ fontSize: 15.5, fontWeight: 700 }}>{v.title}</div>
-                        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: cur ? T.accentSoft : T.ok }}>{cur ? cur.label : 'Delivered'}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                          <SlaBadge sla={v.sla} />
+                          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: cur ? T.accentSoft : T.ok }}>{cur ? cur.label : 'Delivered'}</span>
+                        </div>
                       </div>
                       {v.status_note && <div style={{ fontSize: 12.5, color: T.accentSoft, marginTop: 6 }}>{v.status_note}</div>}
                       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 10 }}>
@@ -139,6 +158,30 @@ export default function ClientDetailPage() {
                     </div>
                   );
                 })}
+              </div>
+            )}
+
+            {tab === 'Notes' && (
+              <div style={card}>
+                <div style={{ fontSize: 11, color: T.inkDim, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 14 }}>Notes & to-dos</div>
+                <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+                  <input value={noteText} onChange={(e) => setNoteText(e.target.value)} placeholder="Add a note or to-do…" style={{ flex: 1, minWidth: 220, height: 38, padding: '0 14px', borderRadius: 999, background: 'rgba(0,0,0,0.28)', border: `1px solid ${T.border}`, color: T.ink }} />
+                  <button onClick={() => addNote('note')} style={{ padding: '8px 14px', borderRadius: 999, border: `1px solid ${T.border}`, background: 'transparent', color: T.accentSoft, fontWeight: 700, cursor: 'pointer', fontSize: 12.5 }}>Add note</button>
+                  <button onClick={() => addNote('todo')} style={{ padding: '8px 14px', borderRadius: 999, border: 'none', background: T.accent, color: T.accentInk, fontWeight: 700, cursor: 'pointer', fontSize: 12.5 }}>Add to-do</button>
+                </div>
+                {notes.length === 0 && <p style={{ color: T.inkFaint }}>No notes yet.</p>}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {notes.map((n) => (
+                    <div key={n.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: 'rgba(0,0,0,0.2)', borderRadius: 10, border: `1px solid ${T.border}` }}>
+                      {n.kind === 'todo' && <button onClick={() => toggleNote(n.id, !n.done)} style={{ width: 20, height: 20, borderRadius: 6, flexShrink: 0, cursor: 'pointer', border: `1px solid ${n.done ? T.ok : T.border}`, background: n.done ? 'rgba(143,209,158,0.15)' : 'transparent', color: T.ok, fontSize: 12 }}>{n.done ? '✓' : ''}</button>}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 13.5, color: n.done ? T.inkDim : T.ink, textDecoration: n.done ? 'line-through' : 'none' }}>{n.body}</div>
+                        <div style={{ fontSize: 11, color: T.inkFaint, marginTop: 2 }}>{n.kind === 'todo' ? 'To-do' : 'Note'} · {n.author?.split('@')[0] ?? ''} · {new Date(n.created_at).toLocaleDateString()}</div>
+                      </div>
+                      <button onClick={() => delNote(n.id)} style={{ background: 'none', border: 'none', color: T.inkFaint, cursor: 'pointer', fontSize: 16 }}>×</button>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 

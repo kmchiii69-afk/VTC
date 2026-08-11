@@ -173,6 +173,45 @@ export default function ProductionPage() {
           </div>
         )}
 
+        {!loading && videos.length > 0 && (() => {
+          const panel: React.CSSProperties = { background: T.card, backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)', border: `1px solid ${T.border}`, borderRadius: 16, padding: '18px 22px', marginBottom: 16 };
+          const label: React.CSSProperties = { fontFamily: 'ui-monospace, monospace', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: T.accentSoft, marginBottom: 12 };
+          const pending = videos.map((v) => ({ v, s: v.stages[currentIdx(v)] })).filter((x) => x.s && x.s.actor === 'client');
+          const scripts = videos.filter((v) => v.script_url);
+          const delivered = videos.filter((v) => v.final_url);
+          return (
+            <>
+              <div style={{ ...panel, border: `1px solid ${pending.length ? T.accent : T.ok}` }}>
+                <div style={label}>{pending.length ? `Needs you now · ${pending.length}` : "You're all caught up ✓"}</div>
+                {pending.length === 0
+                  ? <p style={{ color: T.inkDim, margin: 0 }}>Nothing needs you right now — your team is on it.</p>
+                  : pending.map(({ v, s }) => (
+                    <div key={v.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 10, padding: '9px 0', borderBottom: `1px solid ${T.border}` }}>
+                      <span style={{ fontSize: 14 }}>{v.title}</span>
+                      <span style={{ color: T.accentSoft, fontWeight: 600, fontSize: 13 }}>{s.label} →</span>
+                    </div>
+                  ))}
+              </div>
+              {scripts.length > 0 && (
+                <div style={panel}>
+                  <div style={label}>Your scripts</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {scripts.map((v) => <a key={v.id} href={v.script_url!} target="_blank" rel="noopener noreferrer" style={{ ...pill, marginTop: 0 }}>📄 {v.title}</a>)}
+                  </div>
+                </div>
+              )}
+              {delivered.length > 0 && (
+                <div style={panel}>
+                  <div style={label}>Your delivered videos</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {delivered.map((v) => <a key={v.id} href={v.final_url!} target="_blank" rel="noopener noreferrer" style={{ ...pill, marginTop: 0, borderColor: T.ok, color: T.ok }}>▶ {v.title}</a>)}
+                  </div>
+                </div>
+              )}
+            </>
+          );
+        })()}
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
           {videos.map((v) => {
             const total = v.stages.length;

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { THEME as T } from '@/lib/theme';
 import { Select } from '@/components/ui/select';
+import { SlaBadge } from '@/components/ui/sla-badge';
 import { TEAM_ROLES, teamRoleLabel } from '@/lib/vtc-roles';
 
 // Per-seat kanban board — columns are this seat's slice of the pipeline, cards
@@ -25,6 +26,7 @@ interface Video {
   brief_url: string | null; due_date: string | null; recording_url: string | null;
   final_url: string | null; versions: Record<string, string>; assignees: Record<string, string>;
   status_note: string | null; currentKey: string | null; stages: Col[];
+  sla?: { status: string; hoursLeft: number | null };
 }
 
 // Flat, theme-matched controls (the outlined-pill look).
@@ -122,6 +124,7 @@ export default function TeamBoard() {
                       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
                         <span style={{ fontSize: 10, padding: '2px 7px', borderRadius: 20, border: `1px solid ${T.border}`, color: T.accentSoft }}>{SCRIPT_TYPE_LABELS[v.script_type] ?? v.script_type}</span>
                         {v.due_date && <span style={{ fontSize: 10, padding: '2px 7px', borderRadius: 20, border: `1px solid ${T.border}`, color: T.inkDim }}>due {new Date(v.due_date).toLocaleDateString()}</span>}
+                        <SlaBadge sla={v.sla} size="xs" />
                       </div>
                       {v.status_note && <div style={{ fontSize: 11.5, color: T.accentSoft, marginTop: 8 }}>{v.status_note}</div>}
                     </button>

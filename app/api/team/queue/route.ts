@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/auth";
 import { notifySlack } from "@/lib/slack";
 import { isTeamRole, BOARD_COLUMNS } from "@/lib/vtc-roles";
+import { getSlaHours } from "@/lib/vtc-settings";
+import { computeSla } from "@/lib/vtc-sla";
 import {
   STAGES,
   getAllVideos,
@@ -58,6 +60,7 @@ export async function GET(req: NextRequest) {
     .map((s) => ({ key: s!.key, label: s!.label, owner: s!.owner, actor: s!.actor }));
 
   const all = await getAllVideos();
+  const slaHours = await getSlaHours();
   const videos = [];
   for (const v of all) {
     if (clientFilter && v.client_email.toLowerCase() !== clientFilter) continue;
@@ -71,7 +74,7 @@ export async function GET(req: NextRequest) {
     const owned = focus ? cur.owner === focus : seatOwns(role, isAdmin, cur.owner);
     const assignedToMe = focus ? v.assignees[focus] === email : role ? v.assignees[role] === email : false;
     if (!isAdmin && !assignedToMe && !owned) continue;
-    videos.push(shape(v));
+    videos.push({ ...shape(v), sla: computeSla(v, stages, cur.key, slaHours) });
   }
 
   return NextResponse.json({ role: focus ?? role, columns, videos });

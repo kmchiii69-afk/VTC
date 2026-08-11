@@ -3,6 +3,8 @@ import { getAuthUser } from "@/lib/auth";
 import { getActiveClients } from "@/lib/airtable";
 import { getAllClientStates, upsertClientState, type ClientStateFields } from "@/lib/vtc-clients";
 import { getAllVideos, stagesFor, currentStage, type VtcVideo } from "@/lib/vtc-videos";
+import { getSlaHours } from "@/lib/vtc-settings";
+import { computeSla, worstStatus, type SlaStatus } from "@/lib/vtc-sla";
 
 // AM client-health board. Admin sees everyone; an account manager (team_role
 // 'am') sees their own pod. Merges Airtable client identity (read-only) with the
@@ -40,11 +42,27 @@ export async function GET() {
   const isAdmin = auth.role === "admin";
   const me = auth.email.toLowerCase().trim();
 
-  const [clients, states, videos] = await Promise.all([
+  const [clients, states, videos, slaHours] = await Promise.all([
     getActiveClients().catch(() => []),
     getAllClientStates(),
     getAllVideos(),
+    getSlaHours(),
   ]);
+
+  function slaFor(vids: VtcVideo[]) {
+    const statuses: SlaStatus[] = [];
+    for (const v of vids) {
+      const ordered = stagesFor(v);
+      const cur = currentStage(ordered, v.progress);
+      if (!cur) continue;
+      statuses.push(computeSla(v, ordered, cur.key, slaHours).status);
+    }
+    return {
+      status: worstStatus(statuses),
+      overdue: statuses.filter((s) => s === "overdue").length,
+      atRisk: statuses.filter((s) => s === "at_risk").length,
+    };
+  }
 
   // Group videos by client email.
   const byClient = new Map<string, VtcVideo[]>();
@@ -67,6 +85,7 @@ export async function GET() {
         health: st?.health ?? "healthy",
         status: st?.status ?? "active",
         signal: signalFor(byClient.get(email) ?? []),
+        sla: slaFor(byClient.get(email) ?? []),
       };
     })
     .filter((r) => r.email)

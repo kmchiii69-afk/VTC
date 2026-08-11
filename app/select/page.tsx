@@ -22,6 +22,7 @@ const CREAM = '#f0e8d4';
 // members they belong to (the weekly KPI report is a Creative Specialist thing).
 const OPTIONS = [
   { id: 'assistant',  label: 'VTC Advisor', href: '/SooWei-AI', feature: null as string | null, exclusive: false },
+  { id: 'production', label: 'Production',  href: '/production', feature: null as string | null, exclusive: false },
   { id: 'recordings', label: 'Recordings',   href: '/hub',       feature: 'recordings' as string | null, exclusive: false },
   { id: 'roadmap',    label: 'Roadmap',      href: '/roadmap',   feature: 'roadmap' as string | null, exclusive: false },
   { id: 'sops',       label: 'SOP Library',  href: '/sops',      feature: 'sops' as string | null, exclusive: false },

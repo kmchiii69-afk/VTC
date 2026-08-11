@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { THEME as T } from '@/lib/theme';
+import { Select } from '@/components/ui/select';
 import { TEAM_ROLES, teamRoleLabel } from '@/lib/vtc-roles';
 
 // Per-seat kanban board — columns are this seat's slice of the pipeline, cards
@@ -91,15 +92,11 @@ export default function TeamBoard() {
           </div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {isAdmin && (
-              <select value={focus} onChange={(e) => setFocus(e.target.value)} style={{ ...field, width: 'auto', height: 36 }}>
-                <option value="">All seats</option>
-                {TEAM_ROLES.map((r) => <option key={r} value={r}>{teamRoleLabel(r)}</option>)}
-              </select>
+              <Select value={focus} onChange={setFocus} minWidth={150}
+                options={[{ value: '', label: 'All seats' }, ...TEAM_ROLES.map((r) => ({ value: r, label: teamRoleLabel(r) }))]} />
             )}
-            <select value={client} onChange={(e) => setClient(e.target.value)} style={{ ...field, width: 'auto', height: 36 }}>
-              <option value="">All clients</option>
-              {clients.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
+            <Select value={client} onChange={setClient} minWidth={160}
+              options={[{ value: '', label: 'All clients' }, ...clients.map((c) => ({ value: c, label: c }))]} />
           </div>
         </div>
 

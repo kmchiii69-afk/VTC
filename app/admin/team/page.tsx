@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { THEME as T } from '@/lib/theme';
 import { AdminNav } from '@/components/ui/admin-nav';
+import { Select } from '@/components/ui/select';
 import { TEAM_ROLES, teamRoleLabel } from '@/lib/vtc-roles';
 
 // Admin: assign each member a VTC seat. Client = no seat (they see /production).
@@ -54,15 +55,13 @@ export default function AdminTeamPage() {
                 <div style={{ fontSize: 14, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis' }}>{u.name || u.email}</div>
                 <div style={{ fontSize: 12, color: T.inkDim }}>{u.email}{u.role === 'admin' ? ' · admin' : ''}</div>
               </div>
-              <select
+              <Select
                 value={u.team_role ?? ''}
                 disabled={saving === u.email}
-                onChange={(e) => setSeat(u.email, e.target.value)}
-                style={{ height: 36, padding: '0 10px', borderRadius: 8, fontSize: 13, background: 'rgba(0,0,0,0.28)', border: `1px solid ${T.border}`, color: T.ink }}
-              >
-                <option value="">Client (no seat)</option>
-                {TEAM_ROLES.map((r) => <option key={r} value={r}>{teamRoleLabel(r)}</option>)}
-              </select>
+                minWidth={200}
+                onChange={(v) => setSeat(u.email, v)}
+                options={[{ value: '', label: 'Client (no seat)' }, ...TEAM_ROLES.map((r) => ({ value: r, label: teamRoleLabel(r) }))]}
+              />
             </div>
           ))}
         </div>

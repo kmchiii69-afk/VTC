@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { THEME as T } from '@/lib/theme';
 import { AdminNav } from '@/components/ui/admin-nav';
+import { Select } from '@/components/ui/select';
 import { teamRoleLabel } from '@/lib/vtc-roles';
 
 // Full client drill-down (like the old app): overview stats, deliverables, and
@@ -26,7 +27,6 @@ const HLABEL: Record<string, string> = { healthy: 'Healthy', at_risk: 'At risk',
 const HCOLOR: Record<string, string> = { healthy: T.ok, at_risk: T.accentSoft, defcon: T.accent };
 const TABS = ['Overview', 'Onboarding', 'Deliverables', 'Summary'] as const;
 
-const sel: React.CSSProperties = { height: 34, padding: '0 10px', borderRadius: 999, fontSize: 12.5, background: 'rgba(0,0,0,0.28)', border: `1px solid ${T.border}`, color: T.ink };
 const card: React.CSSProperties = { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: '16px 18px' };
 const link: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 10px', borderRadius: 999, border: `1px solid ${T.border}`, color: T.accentSoft, textDecoration: 'none', fontSize: 12 };
 
@@ -86,16 +86,15 @@ export default function ClientDetailPage() {
                 <div style={{ color: T.inkDim, fontSize: 13, marginTop: 4 }}>{d.email}{d.plan ? ` · ${d.plan}` : ''}</div>
               </div>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                <select value={d.accountManager ?? ''} disabled={busy} onChange={(e) => patch({ accountManagerEmail: e.target.value || null })} style={sel}>
-                  <option value="">Assign AM…</option>
-                  {ams.map((a) => <option key={a.email} value={a.email}>{a.name}</option>)}
-                </select>
-                <select value={d.status} disabled={busy} onChange={(e) => patch({ status: e.target.value })} style={sel}>
-                  {['active', 'paused', 'churned', 'on_books'].map((s) => <option key={s} value={s}>{s}</option>)}
-                </select>
-                <select value={d.health} disabled={busy} onChange={(e) => patch({ health: e.target.value })} style={{ ...sel, borderColor: HCOLOR[d.health], color: HCOLOR[d.health], fontWeight: 700 }}>
-                  {HEALTH.map((h) => <option key={h} value={h}>{HLABEL[h]}</option>)}
-                </select>
+                <Select value={d.accountManager ?? ''} disabled={busy} minWidth={150}
+                  onChange={(v) => patch({ accountManagerEmail: v || null })}
+                  options={[{ value: '', label: 'Assign AM…' }, ...ams.map((a) => ({ value: a.email, label: a.name }))]} />
+                <Select value={d.status} disabled={busy} minWidth={120}
+                  onChange={(v) => patch({ status: v })}
+                  options={['active', 'paused', 'churned', 'on_books'].map((s) => ({ value: s, label: s }))} />
+                <Select value={d.health} disabled={busy} minWidth={120} accentValue={HCOLOR[d.health]}
+                  onChange={(v) => patch({ health: v })}
+                  options={HEALTH.map((h) => ({ value: h, label: HLABEL[h] }))} />
               </div>
             </div>
 

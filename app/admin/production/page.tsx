@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { THEME as T } from '@/lib/theme';
 import { AdminNav } from '@/components/ui/admin-nav';
+import { Select } from '@/components/ui/select';
 
 // Team/admin production board. Create videos, assign seats, and advance each
 // video through its team-owned stages. Client stages (interview, record,
@@ -89,16 +90,15 @@ export default function AdminProductionPage() {
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <input value={nEmail} onChange={(e) => setNEmail(e.target.value)} placeholder="Client email" style={{ ...input, flex: 1, minWidth: 200 }} />
             <input value={nTitle} onChange={(e) => setNTitle(e.target.value)} placeholder="Video title" style={{ ...input, flex: 1, minWidth: 180 }} />
-            <select value={nType} onChange={(e) => setNType(e.target.value)} style={{ ...input, minWidth: 170 }}>
-              <option value="straight_outline">Straight → Outline</option>
-              <option value="interview_outline">Interview → Outline</option>
-              <option value="straight_script">Straight → Script</option>
-              <option value="interview_script">Interview → Script</option>
-            </select>
-            <select value={nDfy} onChange={(e) => setNDfy(e.target.value)} style={{ ...input, minWidth: 110 }}>
-              <option value="dfy">DFY (edit)</option>
-              <option value="dwy">DWY (package)</option>
-            </select>
+            <Select value={nType} onChange={setNType} minWidth={180}
+              options={[
+                { value: 'straight_outline', label: 'Straight → Outline' },
+                { value: 'interview_outline', label: 'Interview → Outline' },
+                { value: 'straight_script', label: 'Straight → Script' },
+                { value: 'interview_script', label: 'Interview → Script' },
+              ]} />
+            <Select value={nDfy} onChange={setNDfy} minWidth={130}
+              options={[{ value: 'dfy', label: 'DFY (edit)' }, { value: 'dwy', label: 'DWY (package)' }]} />
             <button disabled={busy || !nEmail.trim()} onClick={create} style={btn()}>Create</button>
           </div>
         </div>

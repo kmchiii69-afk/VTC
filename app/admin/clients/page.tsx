@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { THEME as T } from '@/lib/theme';
 import { AdminNav } from '@/components/ui/admin-nav';
+import { Select } from '@/components/ui/select';
 import { HEALTH_VALUES, HEALTH_LABEL, type ClientHealth } from '@/lib/vtc-clients';
 
 // AM client-health board — Jake's #1 gap: one view of every client grouped by
@@ -75,7 +76,6 @@ export default function ClientHealthPage() {
 
   const amName = (email: string) => ams.find((a) => a.email === email)?.name ?? email;
 
-  const sel: React.CSSProperties = { height: 32, padding: '0 8px', borderRadius: 8, fontSize: 12.5, background: 'rgba(0,0,0,0.28)', border: `1px solid ${T.border}`, color: T.ink, outline: 'none' };
   const chip = (text: string, color: string = T.inkDim): React.CSSProperties => ({ fontSize: 10.5, padding: '3px 9px', borderRadius: 20, background: 'rgba(255,255,255,0.05)', border: `1px solid ${T.border}`, color });
 
   return (
@@ -131,14 +131,13 @@ export default function ClientHealthPage() {
                   </div>
                   <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                     {isAdmin && (
-                      <select value={r.accountManager ?? ''} disabled={busy === r.email} onChange={(e) => patch(r.email, { accountManagerEmail: e.target.value || null })} style={sel}>
-                        <option value="">Assign AM…</option>
-                        {ams.map((a) => <option key={a.email} value={a.email}>{a.name}</option>)}
-                      </select>
+                      <Select value={r.accountManager ?? ''} disabled={busy === r.email} minWidth={150}
+                        onChange={(v) => patch(r.email, { accountManagerEmail: v || null })}
+                        options={[{ value: '', label: 'Assign AM…' }, ...ams.map((a) => ({ value: a.email, label: a.name }))]} />
                     )}
-                    <select value={r.health} disabled={busy === r.email} onChange={(e) => patch(r.email, { health: e.target.value })} style={{ ...sel, borderColor: HEALTH_COLOR[r.health], color: HEALTH_COLOR[r.health], fontWeight: 700 }}>
-                      {HEALTH_VALUES.map((h) => <option key={h} value={h} style={{ color: '#000' }}>{HEALTH_LABEL[h]}</option>)}
-                    </select>
+                    <Select value={r.health} disabled={busy === r.email} minWidth={120} accentValue={HEALTH_COLOR[r.health]}
+                      onChange={(v) => patch(r.email, { health: v })}
+                      options={HEALTH_VALUES.map((h) => ({ value: h, label: HEALTH_LABEL[h] }))} />
                   </div>
                 </div>
               ))}

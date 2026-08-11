@@ -45,6 +45,7 @@ export function VtcProfile() {
     items.push({ label: 'Client health', href: '/admin/clients' });
     items.push({ label: 'Seats & roles', href: '/admin/team' });
     items.push({ label: 'Team queue', href: '/team' });
+    items.push({ label: 'Onboarding flow', href: '/onboarding' });
     items.push({ label: 'Client view', href: '/production' });
   } else if (me.teamRole === 'am') {
     items.push({ label: 'My work', href: '/team' });

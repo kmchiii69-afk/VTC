@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { THEME as T } from '@/lib/theme';
+import { AdminNav } from '@/components/ui/admin-nav';
 
 // Team/admin production board. Create videos, assign seats, and advance each
 // video through its team-owned stages. Client stages (interview, record,
@@ -77,7 +78,8 @@ export default function AdminProductionPage() {
 
   return (
     <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', color: T.ink, fontFamily: "'DM Sans', sans-serif" }}>
-      <div style={{ maxWidth: 940, margin: '0 auto', padding: 'clamp(40px,7vw,72px) clamp(20px,5vw,32px)' }}>
+      <AdminNav />
+      <div style={{ maxWidth: 940, margin: '0 auto', padding: 'clamp(28px,5vw,48px) clamp(20px,5vw,32px)' }}>
         <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: T.accentSoft, marginBottom: 10 }}>VTC · Team</div>
         <h1 style={{ fontSize: 'clamp(24px,4vw,34px)', fontWeight: 800, marginBottom: 8 }}>Production board</h1>
         <p style={{ color: T.inkDim, marginBottom: 24, lineHeight: 1.6 }}>Create a video, assign seats, and move it through its team stages. Client steps update themselves.</p>

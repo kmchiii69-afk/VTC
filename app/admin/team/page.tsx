@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { THEME as T } from '@/lib/theme';
+import { AdminNav } from '@/components/ui/admin-nav';
 import { TEAM_ROLES, teamRoleLabel } from '@/lib/vtc-roles';
 
 // Admin: assign each member a VTC seat. Client = no seat (they see /production).
@@ -37,7 +38,8 @@ export default function AdminTeamPage() {
 
   return (
     <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', color: T.ink, fontFamily: "'DM Sans', sans-serif" }}>
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: 'clamp(40px,7vw,72px) clamp(20px,5vw,32px)' }}>
+      <AdminNav />
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: 'clamp(28px,5vw,48px) clamp(20px,5vw,32px)' }}>
         <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: T.accentSoft, marginBottom: 10 }}>VTC · Team</div>
         <h1 style={{ fontSize: 'clamp(24px,4vw,34px)', fontWeight: 800, marginBottom: 8 }}>Seats & roles</h1>
         <p style={{ color: T.inkDim, marginBottom: 24, lineHeight: 1.6 }}>Give each teammate a seat. Seats take effect on their next login. Leave blank for clients.</p>

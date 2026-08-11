@@ -167,10 +167,31 @@ export default function ProductionPage() {
         {err && <p style={{ color: T.accent, marginBottom: 16 }}>{err}</p>}
 
         {!loading && videos.length === 0 && (
-          <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: '26px 24px', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}>
-            <p style={{ fontSize: 16, marginBottom: 6 }}>No videos in production yet.</p>
-            <p style={{ color: T.inkDim, lineHeight: 1.6, margin: 0 }}>As soon as your team kicks off your first video, it&apos;ll appear here with your steps and progress.</p>
-          </div>
+          <>
+            <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: '26px 24px', marginBottom: 18, backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}>
+              <p style={{ fontSize: 16, marginBottom: 6 }}>No videos in production yet.</p>
+              <p style={{ color: T.inkDim, lineHeight: 1.6, margin: 0 }}>As soon as your team kicks off your first video, it&apos;ll appear here with your script, steps, and progress.</p>
+            </div>
+            <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: '26px 24px', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' }}>
+              <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: T.accentSoft, marginBottom: 16 }}>How your videos flow</div>
+              {[
+                ['We craft your ideas & write the script', 'Your strategist + scriptwriter handle this.'],
+                ['You approve the script', "We'll notify you — read it and give the go-ahead."],
+                ['You record & submit your footage', 'Paste a Drive/Dropbox link right here.'],
+                ['We edit it (V1 → V2 → V3)', 'Our editors + QA do the heavy lifting.'],
+                ['You review & approve', 'Watch it, approve, or request changes.'],
+                ['We deliver & publish', "Your finished YouTube video lands in 'Your delivered videos'."],
+              ].map(([t, s], i) => (
+                <div key={i} style={{ display: 'flex', gap: 14, padding: '12px 0', borderBottom: i < 5 ? `1px solid ${T.border}` : 'none' }}>
+                  <span style={{ width: 26, height: 26, borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, background: 'rgba(234,205,194,0.12)', border: `1px solid ${T.border}`, color: T.accentSoft }}>{i + 1}</span>
+                  <div>
+                    <div style={{ fontSize: 15, fontWeight: 600 }}>{t}</div>
+                    <div style={{ fontSize: 12.5, color: T.inkDim, marginTop: 2 }}>{s}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
 
         {!loading && videos.length > 0 && (() => {

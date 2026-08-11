@@ -24,7 +24,7 @@ interface Detail {
 const HEALTH = ['healthy', 'at_risk', 'defcon'];
 const HLABEL: Record<string, string> = { healthy: 'Healthy', at_risk: 'At risk', defcon: 'Defcon' };
 const HCOLOR: Record<string, string> = { healthy: T.ok, at_risk: T.accentSoft, defcon: T.accent };
-const TABS = ['Overview', 'Deliverables', 'Details'] as const;
+const TABS = ['Overview', 'Onboarding', 'Deliverables', 'Summary'] as const;
 
 const sel: React.CSSProperties = { height: 34, padding: '0 10px', borderRadius: 999, fontSize: 12.5, background: 'rgba(0,0,0,0.28)', border: `1px solid ${T.border}`, color: T.ink };
 const card: React.CSSProperties = { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: '16px 18px' };
@@ -143,9 +143,23 @@ export default function ClientDetailPage() {
               </div>
             )}
 
-            {tab === 'Details' && (
+            {tab === 'Summary' && (
               <div style={card}>
-                <div style={{ fontSize: 11, color: T.inkDim, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 14 }}>Airtable record · {Object.keys(d.fields).length} fields (incl. onboarding form)</div>
+                <div style={{ fontSize: 11, color: T.inkDim, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 14 }}>Summary</div>
+                <p style={{ fontSize: 15, lineHeight: 1.7, color: T.ink, margin: 0 }}>
+                  <strong>{d.name}</strong> is on <strong>{d.plan ?? 'a plan TBC'}</strong>, owned by{' '}
+                  <strong>{d.accountManager ?? 'no account manager yet'}</strong>, currently flagged{' '}
+                  <span style={{ color: HCOLOR[d.health], fontWeight: 700 }}>{HLABEL[d.health]}</span> ({d.status}).{' '}
+                  {stats.total === 0
+                    ? 'No videos in production yet.'
+                    : `${stats.active} video${stats.active === 1 ? '' : 's'} in production and ${stats.delivered} delivered.`}
+                </p>
+              </div>
+            )}
+
+            {tab === 'Onboarding' && (
+              <div style={card}>
+                <div style={{ fontSize: 11, color: T.inkDim, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 14 }}>Onboarding & client record · {Object.keys(d.fields).length} fields (incl. onboarding form)</div>
                 {Object.keys(d.fields).length === 0 && <p style={{ color: T.inkDim }}>No Airtable record found for this email.</p>}
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   {Object.entries(d.fields).map(([k, v]) => (

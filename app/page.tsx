@@ -21,7 +21,7 @@ function MeshGradientWrapper() {
   return (
     <Comp
       className="!fixed inset-0 w-full h-full"
-      colors={['#000000', '#0c0904', '#1e1608', '#c9a455', '#000000']}
+      colors={['#000000', '#160705', '#8a1a14', '#F55A4E', '#000000']}
       speed={0.35}
     />
   );

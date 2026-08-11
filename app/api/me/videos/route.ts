@@ -2,74 +2,94 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/auth";
 import { notifySlack } from "@/lib/slack";
 import {
-  CHECKPOINTS,
   getClientVideos,
   getVideo,
   patchVideo,
-  isCheckpointDone,
-  withCheckpoint,
+  stagesFor,
+  currentStage,
+  withStage,
+  type VtcVideo,
   type VideoFields,
 } from "@/lib/vtc-videos";
 
-// Client-facing production pipeline. GET lists the signed-in client's videos;
-// POST advances one of THEIR checkpoints. Team-owned checkpoints (script,
-// editing, delivery) are only settable via the admin route. Order is validated
-// server-side so a raw API call can't skip ahead.
+// Client-facing pipeline. GET lists the signed-in client's videos with each
+// one's computed stage list; POST advances one of THEIR stages (interview,
+// record, client_review) with server-side order validation.
+
+export const dynamic = "force-dynamic";
+
+function withStages(v: VtcVideo) {
+  return { ...v, stages: stagesFor(v) };
+}
 
 export async function GET() {
   const auth = await getAuthUser();
   if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const videos = await getClientVideos(auth.email);
-  return NextResponse.json({ videos, checkpoints: CHECKPOINTS });
+  return NextResponse.json({ videos: videos.map(withStages) });
 }
 
-type Action = "approve_script" | "mark_recorded" | "submit_recording";
+type Action = "complete_interview" | "submit_footage" | "approve_video" | "request_changes";
 
 export async function POST(req: NextRequest) {
   const auth = await getAuthUser();
   if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  let body: { videoId?: string; action?: Action; url?: string } = {};
+  let body: { videoId?: string; action?: Action; url?: string; note?: string } = {};
   try {
     body = await req.json();
   } catch {
     /* empty */
   }
-  const { videoId, action, url } = body;
+  const { videoId, action } = body;
   if (!videoId || !action) {
     return NextResponse.json({ error: "videoId and action are required" }, { status: 400 });
   }
 
   const video = await getVideo(videoId);
   if (!video) return NextResponse.json({ error: "Video not found" }, { status: 404 });
-  // A client may only touch their own videos (admins can act via the admin route).
   if (auth.role !== "admin" && video.client_email !== auth.email.toLowerCase().trim()) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const p = video.progress;
+  const list = stagesFor(video);
+  const cur = currentStage(list, video.progress);
+  if (!cur || cur.actor !== "client") {
+    return NextResponse.json({ error: "It's not your turn on this video right now." }, { status: 409 });
+  }
+
   let updates: VideoFields;
   let slack: string;
 
   switch (action) {
-    case "approve_script":
-      if (!isCheckpointDone(p, 0)) return NextResponse.json({ error: "Script isn't ready yet." }, { status: 409 });
-      updates = { progress: withCheckpoint(p, 1, true, "client") };
-      slack = `✅ *${video.client_email}* approved the script for “${video.title}”.`;
+    case "complete_interview":
+      if (cur.key !== "interview") return NextResponse.json({ error: "No interview is due." }, { status: 409 });
+      updates = { progress: withStage(list, video.progress, "interview", true, "client") };
+      slack = `📝 *${video.client_email}* completed the interview for “${video.title}”.`;
       break;
-    case "mark_recorded":
-      if (!isCheckpointDone(p, 1)) return NextResponse.json({ error: "Approve the script first." }, { status: 409 });
-      updates = { progress: withCheckpoint(p, 2, true, "client") };
-      slack = `🎬 *${video.client_email}* marked “${video.title}” as recorded.`;
-      break;
-    case "submit_recording": {
-      if (!isCheckpointDone(p, 2)) return NextResponse.json({ error: "Mark it recorded first." }, { status: 409 });
-      const link = (url ?? "").trim();
+    case "submit_footage": {
+      if (cur.key !== "record") return NextResponse.json({ error: "You can't submit footage yet." }, { status: 409 });
+      const link = (body.url ?? "").trim();
       if (!/^https?:\/\//i.test(link)) {
         return NextResponse.json({ error: "Enter a valid link (https://…)." }, { status: 400 });
       }
-      updates = { recording_url: link, progress: withCheckpoint(p, 3, true, "client") };
-      slack = `📤 *${video.client_email}* uploaded a recording for “${video.title}”: ${link}`;
+      updates = { recording_url: link, progress: withStage(list, video.progress, "record", true, "client") };
+      slack = `🎬 *${video.client_email}* submitted footage for “${video.title}”: ${link}`;
+      break;
+    }
+    case "approve_video":
+      if (cur.key !== "client_review") return NextResponse.json({ error: "Nothing to review yet." }, { status: 409 });
+      updates = { progress: withStage(list, video.progress, "client_review", true, "client") };
+      slack = `✅ *${video.client_email}* approved “${video.title}”.`;
+      break;
+    case "request_changes": {
+      if (cur.key !== "client_review") return NextResponse.json({ error: "Nothing to review yet." }, { status: 409 });
+      const note = (body.note ?? "").trim();
+      updates = {
+        status_note: note ? `Changes requested: ${note}` : "Changes requested",
+        progress: withStage(list, video.progress, "client_review", true, "client"),
+      };
+      slack = `✏️ *${video.client_email}* requested changes on “${video.title}”: ${note || "(no note)"}`;
       break;
     }
     default:
@@ -78,5 +98,5 @@ export async function POST(req: NextRequest) {
 
   const saved = await patchVideo(videoId, updates);
   await notifySlack(slack);
-  return NextResponse.json({ video: saved });
+  return NextResponse.json({ video: withStages(saved) });
 }

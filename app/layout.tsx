@@ -6,6 +6,7 @@ import { RouteTransition } from '@/components/ui/route-transition';
 import { Suspense } from 'react';
 import PostHogProvider from '@/components/PostHogProvider';
 import { WavesBackground } from '@/components/ui/waves-shader';
+import { VtcProfile } from '@/components/ui/vtc-profile';
 
 export const metadata: Metadata = {
   title: "VTC",
@@ -38,10 +39,17 @@ export default function RootLayout({
         <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
           <WavesBackground className="h-full w-full" />
         </div>
+        {/* Contrast scrim — darkens the shader's bright regions so cream text
+            stays readable on every page, while keeping the Waves look. */}
+        <div aria-hidden style={{
+          position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
+          background: "linear-gradient(180deg, rgba(18,13,24,0.72) 0%, rgba(18,13,24,0.55) 42%, rgba(18,13,24,0.66) 100%)",
+        }} />
         <div style={{ position: "relative", zIndex: 1 }}>
           <Suspense>
             <PostHogProvider>
               <RouteTransition>{children}</RouteTransition>
+              <VtcProfile />
             </PostHogProvider>
           </Suspense>
         </div>

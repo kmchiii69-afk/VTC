@@ -1,18 +1,9 @@
 'use client';
 
-import { useState, useRef, useEffect, Suspense } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { track } from '@vercel/analytics';
-import { WavesBackground } from '@/components/ui/waves-shader';
 import { homeRouteFor, isTeamRole } from '@/lib/vtc-roles';
-
-function MeshGradientWrapper() {
-  return (
-    <div className="!fixed inset-0 w-full h-full" style={{ pointerEvents: 'none' }} aria-hidden>
-      <WavesBackground className="h-full w-full" />
-    </div>
-  );
-}
 
 export default function LoginPage() {
   const router = useRouter();
@@ -140,11 +131,10 @@ export default function LoginPage() {
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#000',
+      minHeight: '100vh', background: 'transparent',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       position: 'relative', overflow: 'hidden',
     }}>
-      <Suspense fallback={null}><MeshGradientWrapper /></Suspense>
 
       <div style={{
         position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none',

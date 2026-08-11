@@ -3,27 +3,13 @@
 import { useState, useRef, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { track } from '@vercel/analytics';
-
-let MeshGradientComponent: React.ComponentType<{
-  className?: string;
-  colors?: string[];
-  speed?: number;
-}> | null = null;
+import { WavesBackground } from '@/components/ui/waves-shader';
 
 function MeshGradientWrapper() {
-  const [Comp, setComp] = useState<typeof MeshGradientComponent>(null);
-  useEffect(() => {
-    import('@paper-design/shaders-react').then((mod) => {
-      setComp(() => mod.MeshGradient);
-    }).catch(() => {});
-  }, []);
-  if (!Comp) return null;
   return (
-    <Comp
-      className="!fixed inset-0 w-full h-full"
-      colors={['#000000', '#0c0708', '#1c1113', '#5a3335', '#030202']}
-      speed={0.35}
-    />
+    <div className="!fixed inset-0 w-full h-full" style={{ pointerEvents: 'none' }} aria-hidden>
+      <WavesBackground className="h-full w-full" />
+    </div>
   );
 }
 
@@ -168,8 +154,8 @@ export default function LoginPage() {
         }
         .ba-input::placeholder { color: rgba(240,232,212,0.18); }
         .ba-input:focus {
-          border-color: rgba(201,164,85,0.28) !important;
-          background: rgba(201,164,85,0.02) !important;
+          border-color: rgba(183,93,105,0.28) !important;
+          background: rgba(183,93,105,0.02) !important;
         }
       `}</style>
 
@@ -180,7 +166,7 @@ export default function LoginPage() {
       }}>
         <p style={{
           fontSize: '11px', letterSpacing: '0.45em', textTransform: 'uppercase',
-          color: 'rgba(201,164,85,0.6)', fontWeight: 400, marginBottom: '2.5rem',
+          color: 'rgba(183,93,105,0.6)', fontWeight: 400, marginBottom: '2.5rem',
         }}>
           VTC
         </p>
@@ -198,7 +184,7 @@ export default function LoginPage() {
               onClick={() => switchMode('login')}
               style={{
                 marginTop: 6, background: 'none', border: 'none', cursor: 'pointer',
-                color: 'rgba(201,164,85,0.7)', fontSize: 12, letterSpacing: '0.1em',
+                color: 'rgba(183,93,105,0.7)', fontSize: 12, letterSpacing: '0.1em',
               }}
             >
               ← Back to sign in
@@ -247,11 +233,11 @@ export default function LoginPage() {
                 style={{
                   position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)',
                   background: 'none', border: 'none', cursor: 'pointer', padding: 2,
-                  color: showPass ? 'rgba(201,164,85,0.7)' : 'rgba(240,232,212,0.25)',
+                  color: showPass ? 'rgba(183,93,105,0.7)' : 'rgba(240,232,212,0.25)',
                   fontSize: 14, lineHeight: 1, transition: 'color 0.2s',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(201,164,85,0.7)')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = showPass ? 'rgba(201,164,85,0.7)' : 'rgba(240,232,212,0.25)')}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(183,93,105,0.7)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = showPass ? 'rgba(183,93,105,0.7)' : 'rgba(240,232,212,0.25)')}
               >
                 {showPass ? '🙈' : '👁'}
               </button>
@@ -266,7 +252,7 @@ export default function LoginPage() {
               marginTop: 6,
               background: 'none',
               border: 'none',
-              color: loading ? 'rgba(201,164,85,0.25)' : 'rgba(201,164,85,0.7)',
+              color: loading ? 'rgba(183,93,105,0.25)' : 'rgba(183,93,105,0.7)',
               fontSize: 22, lineHeight: 1,
               cursor: loading ? 'default' : 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -274,10 +260,10 @@ export default function LoginPage() {
               padding: '8px',
             }}
             onMouseEnter={(e) => {
-              if (!loading) e.currentTarget.style.color = '#c9a455';
+              if (!loading) e.currentTarget.style.color = '#B75D69';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = 'rgba(201,164,85,0.7)';
+              e.currentTarget.style.color = 'rgba(183,93,105,0.7)';
             }}
           >
             {loading ? '·' : '→'}
@@ -299,11 +285,11 @@ export default function LoginPage() {
             onClick={() => switchMode(mode === 'login' ? 'signup' : 'login')}
             style={{
               marginTop: 10, background: 'none', border: 'none', cursor: 'pointer',
-              color: 'rgba(201,164,85,0.6)', fontSize: 12, letterSpacing: '0.05em',
+              color: 'rgba(183,93,105,0.6)', fontSize: 12, letterSpacing: '0.05em',
               transition: 'color 0.2s',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#c9a455')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(201,164,85,0.6)')}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#B75D69')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(183,93,105,0.6)')}
           >
             {mode === 'login' ? 'Request access' : '← Back to sign in'}
           </button>

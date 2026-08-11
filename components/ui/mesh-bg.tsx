@@ -1,53 +1,16 @@
 'use client';
 
-import { useState, useEffect, useSyncExternalStore } from 'react';
-import { isVideoActive, subscribeVideoActive } from '@/lib/video-active';
+// Shared page background. Now unified onto the app-wide "Waves" flow shader so
+// every page matches the theme (plum → rose → blush → cream). Kept as a thin
+// wrapper (same `<MeshBg />` call sites) that renders the Waves canvas fixed
+// behind the page. The `speed` prop is accepted for compatibility and ignored.
+import { WavesBackground } from '@/components/ui/waves-shader';
 
-// Lazy-loads @paper-design/shaders-react MeshGradient — same approach as login page.
-// Usage: <MeshBg speed={0.25} />
-// All pages share the same amber-gold-black color stops for visual continuity.
-
-type MeshGradientType = React.ComponentType<{
-  className?: string;
-  colors?: string[];
-  speed?: number;
-}>;
-
-let _Comp: MeshGradientType | null = null;
-
-// Very dark, subtle background with a faint soft-red bloom (not bold red).
-const COLORS = ['#000000', '#0c0708', '#1c1113', '#5a3335', '#030202'];
-
-// Static fallback that visually matches the live gradient. Rendered while the
-// shader is still loading AND whenever a video player is on screen, so the
-// constant WebGL redraw never competes with video playback.
-const STATIC_BG = `linear-gradient(135deg, ${COLORS.join(', ')})`;
-
-export function MeshBg({ speed = 0.25 }: { speed?: number }) {
-  const [Comp, setComp] = useState<MeshGradientType | null>(_Comp);
-  const videoActive = useSyncExternalStore(
-    subscribeVideoActive,
-    isVideoActive,
-    () => false, // server snapshot
-  );
-
-  useEffect(() => {
-    if (_Comp) return; // already cached — useState seeded it, nothing to do
-    import('@paper-design/shaders-react').then((mod) => {
-      _Comp = mod.MeshGradient as MeshGradientType;
-      setComp(_Comp);
-    }).catch(() => {});
-  }, []);
-
-  // Always paint the static gradient underneath; layer the live shader on top
-  // once it's ready. This removes the black flash that happened when the WebGL
-  // canvas re-mounted on a route change and was blank for a frame before paint.
+export function MeshBg({ speed }: { speed?: number }) {
+  void speed;
   return (
-    <>
-      <div className="!fixed inset-0 w-full h-full" style={{ background: STATIC_BG }} />
-      {Comp && !videoActive && (
-        <Comp className="!fixed inset-0 w-full h-full" colors={COLORS} speed={speed} />
-      )}
-    </>
+    <div className="!fixed inset-0 w-full h-full" style={{ zIndex: 0, pointerEvents: 'none' }} aria-hidden>
+      <WavesBackground className="h-full w-full" />
+    </div>
   );
 }

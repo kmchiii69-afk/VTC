@@ -5,10 +5,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { RouteTransition } from '@/components/ui/route-transition';
 import { Suspense } from 'react';
 import PostHogProvider from '@/components/PostHogProvider';
-import { MonthlyFormGate } from '@/components/ui/monthly-form-gate';
-import { TodoBubble } from '@/components/ui/todo-bubble';
-import { LeaderboardBubble } from '@/components/ui/leaderboard-bubble';
-import { ShaderBackground } from '@/components/ui/gem-smoke-metaballs';
+import { WavesBackground } from '@/components/ui/waves-shader';
 
 export const metadata: Metadata = {
   title: "VTC",
@@ -20,7 +17,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#060504",
+  themeColor: "#1A1423",
 };
 
 export default function RootLayout({
@@ -35,20 +32,16 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="min-h-full" style={{ background: "#060504" }}>
-        {/* App-wide animated "Gem Smoke" shader background — sits fixed behind
-            all content. Pages need a transparent (or semi-transparent) surface
-            for it to show through. */}
+      <body className="min-h-full" style={{ background: "#1A1423" }}>
+        {/* App-wide animated "Waves" flow shader — fixed behind all content.
+            Pages use translucent dark-glass surfaces so it shows through. */}
         <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
-          <ShaderBackground className="h-full w-full" />
+          <WavesBackground className="h-full w-full" />
         </div>
         <div style={{ position: "relative", zIndex: 1 }}>
           <Suspense>
             <PostHogProvider>
               <RouteTransition>{children}</RouteTransition>
-              <MonthlyFormGate />
-              <TodoBubble />
-              <LeaderboardBubble />
             </PostHogProvider>
           </Suspense>
         </div>

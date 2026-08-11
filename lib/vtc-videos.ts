@@ -57,7 +57,17 @@ export const STAGES: Stage[] = [
   { key: "published", label: "Published", owner: "am", actor: "team", hint: "Your video is live." },
 ];
 
-export type ScriptType = "outline" | "full" | "interview";
+// Four real script paths (from the strategist board). "Interview*" types add
+// the client-interview stage before scripting.
+export type ScriptType = "straight_outline" | "interview_outline" | "straight_script" | "interview_script";
+
+export const SCRIPT_TYPE_LABELS: Record<ScriptType, string> = {
+  straight_outline: "Straight to Outline",
+  interview_outline: "Interview to Outline",
+  straight_script: "Straight to Script",
+  interview_script: "Interview to Script",
+};
+export const SCRIPT_TYPES = Object.keys(SCRIPT_TYPE_LABELS) as ScriptType[];
 
 export type Progress = Record<string, { done: true; at: string; by: string }>;
 
@@ -69,6 +79,9 @@ export interface VtcVideo {
   dfy: boolean; // true = we edit (DFY); false = packaging-only (DWY)
   script_url: string | null;
   script_note: string | null;
+  reference_url: string | null; // YouTube reference the idea is modelled on
+  brief_url: string | null;     // scripting brief link
+  due_date: string | null;      // script due (ISO date)
   recording_url: string | null;
   final_url: string | null;
   versions: Record<string, string>; // { V1: url, CRV1: url, ... }
@@ -84,6 +97,7 @@ export type VideoFields = Partial<
   Pick<
     VtcVideo,
     | "title" | "script_type" | "dfy" | "script_url" | "script_note"
+    | "reference_url" | "brief_url" | "due_date"
     | "recording_url" | "final_url" | "versions" | "assignees"
     | "status_note" | "thumbnail_stage" | "progress"
   >
@@ -95,7 +109,7 @@ export type VideoFields = Partial<
 export function stagesFor(v: { script_type?: ScriptType | null; dfy?: boolean | null }): Stage[] {
   const isDwy = v.dfy === false;
   return STAGES.filter((s) => {
-    if (s.key === "interview") return v.script_type === "interview";
+    if (s.key === "interview") return (v.script_type ?? "").startsWith("interview");
     if (s.key === "editing" || s.key === "revisions") return !isDwy;
     if (s.key === "packaging") return isDwy;
     return true;
@@ -139,10 +153,13 @@ function normalize(row: Record<string, unknown>): VtcVideo {
     id: String(row.id),
     client_email: String(row.client_email ?? ""),
     title: (row.title as string) ?? "Untitled video",
-    script_type: ((row.script_type as ScriptType) ?? "outline"),
+    script_type: ((row.script_type as ScriptType) ?? "straight_outline"),
     dfy: row.dfy === undefined || row.dfy === null ? true : Boolean(row.dfy),
     script_url: (row.script_url as string) ?? null,
     script_note: (row.script_note as string) ?? null,
+    reference_url: (row.reference_url as string) ?? null,
+    brief_url: (row.brief_url as string) ?? null,
+    due_date: (row.due_date as string) ?? null,
     recording_url: (row.recording_url as string) ?? null,
     final_url: (row.final_url as string) ?? null,
     versions: (row.versions as Record<string, string>) ?? {},
@@ -202,7 +219,7 @@ export async function createVideo(input: {
     .insert({
       client_email: input.clientEmail.toLowerCase().trim(),
       title: input.title || "Untitled video",
-      script_type: input.scriptType ?? "outline",
+      script_type: input.scriptType ?? "straight_outline",
       dfy: input.dfy ?? true,
       progress: {},
       versions: {},

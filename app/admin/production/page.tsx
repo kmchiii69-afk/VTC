@@ -21,8 +21,8 @@ const isDone = (p: Progress, k: string) => !!p[k]?.done;
 const currentStage = (v: Video): Stage | null => v.stages.find((s) => !isDone(v.progress, s.key)) ?? null;
 
 const card: React.CSSProperties = { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: '18px 20px', backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)' };
-const input: React.CSSProperties = { height: 38, padding: '0 12px', borderRadius: 8, fontSize: 13, background: 'rgba(0,0,0,0.28)', border: `1px solid ${T.border}`, color: T.ink, outline: 'none' };
-const btn = (primary = true): React.CSSProperties => ({ padding: '8px 14px', borderRadius: 8, border: primary ? 'none' : `1px solid ${T.border}`, background: primary ? T.accent : 'transparent', color: primary ? T.accentInk : T.accentSoft, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' });
+const input: React.CSSProperties = { height: 38, padding: '0 12px', borderRadius: 999, fontSize: 13, background: 'rgba(0,0,0,0.28)', border: `1px solid ${T.border}`, color: T.ink, outline: 'none' };
+const btn = (primary = true): React.CSSProperties => ({ padding: '8px 14px', borderRadius: 999, border: primary ? 'none' : `1px solid ${T.border}`, background: primary ? T.accent : 'transparent', color: primary ? T.accentInk : T.accentSoft, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' });
 
 const SEATS = ['strategist', 'scriptwriter', 'qa', 'editor', 'thumbnail'];
 
@@ -33,7 +33,7 @@ export default function AdminProductionPage() {
   const [busy, setBusy] = useState(false);
   const [nEmail, setNEmail] = useState('');
   const [nTitle, setNTitle] = useState('');
-  const [nType, setNType] = useState('outline');
+  const [nType, setNType] = useState('straight_outline');
   const [nDfy, setNDfy] = useState('dfy');
 
   const load = () => {
@@ -89,10 +89,11 @@ export default function AdminProductionPage() {
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <input value={nEmail} onChange={(e) => setNEmail(e.target.value)} placeholder="Client email" style={{ ...input, flex: 1, minWidth: 200 }} />
             <input value={nTitle} onChange={(e) => setNTitle(e.target.value)} placeholder="Video title" style={{ ...input, flex: 1, minWidth: 180 }} />
-            <select value={nType} onChange={(e) => setNType(e.target.value)} style={{ ...input, minWidth: 130 }}>
-              <option value="outline">Outline</option>
-              <option value="full">Full script</option>
-              <option value="interview">Interview</option>
+            <select value={nType} onChange={(e) => setNType(e.target.value)} style={{ ...input, minWidth: 170 }}>
+              <option value="straight_outline">Straight → Outline</option>
+              <option value="interview_outline">Interview → Outline</option>
+              <option value="straight_script">Straight → Script</option>
+              <option value="interview_script">Interview → Script</option>
             </select>
             <select value={nDfy} onChange={(e) => setNDfy(e.target.value)} style={{ ...input, minWidth: 110 }}>
               <option value="dfy">DFY (edit)</option>
@@ -175,13 +176,13 @@ function PromptBtn({ label, placeholder, onSubmit, busy, ghost, small }: {
   const [open, setOpen] = useState(false);
   const [val, setVal] = useState('');
   const style: React.CSSProperties = ghost
-    ? { padding: small ? '5px 10px' : '8px 14px', borderRadius: 8, border: `1px solid ${T.border}`, background: 'transparent', color: T.accentSoft, fontSize: small ? 11 : 12.5, fontWeight: 600, cursor: 'pointer' }
-    : { padding: '8px 14px', borderRadius: 8, border: 'none', background: T.accent, color: T.accentInk, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' };
+    ? { padding: small ? '5px 10px' : '8px 14px', borderRadius: 999, border: `1px solid ${T.border}`, background: 'transparent', color: T.accentSoft, fontSize: small ? 11 : 12.5, fontWeight: 600, cursor: 'pointer' }
+    : { padding: '8px 14px', borderRadius: 999, border: 'none', background: T.accent, color: T.accentInk, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' };
   if (!open) return <button disabled={busy} onClick={() => setOpen(true)} style={style}>{label}</button>;
   return (
     <span style={{ display: 'inline-flex', gap: 6 }}>
       <input autoFocus value={val} onChange={(e) => setVal(e.target.value)} placeholder={placeholder}
-        style={{ height: 32, padding: '0 10px', borderRadius: 8, fontSize: 12.5, background: 'rgba(0,0,0,0.28)', border: `1px solid ${T.border}`, color: T.ink, outline: 'none' }} />
+        style={{ height: 32, padding: '0 10px', borderRadius: 999, fontSize: 12.5, background: 'rgba(0,0,0,0.28)', border: `1px solid ${T.border}`, color: T.ink, outline: 'none' }} />
       <button disabled={busy} onClick={() => { onSubmit(val.trim()); setOpen(false); setVal(''); }} style={{ ...style, background: T.accent, color: T.accentInk, border: 'none' }}>OK</button>
     </span>
   );

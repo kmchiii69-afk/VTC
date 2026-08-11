@@ -33,3 +33,6 @@ alter table vtc_videos add column if not exists versions jsonb not null default 
 alter table vtc_videos add column if not exists assignees jsonb not null default '{}'::jsonb;
 alter table vtc_videos add column if not exists status_note text;
 alter table vtc_videos add column if not exists thumbnail_stage text;
+alter table vtc_videos add column if not exists reference_url text;
+alter table vtc_videos add column if not exists brief_url text;
+alter table vtc_videos add column if not exists due_date date;

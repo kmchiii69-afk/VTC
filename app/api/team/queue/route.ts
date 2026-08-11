@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthUser } from "@/lib/auth";
 import { notifySlack } from "@/lib/slack";
-import { isTeamRole } from "@/lib/vtc-roles";
+import { isTeamRole, BOARD_COLUMNS } from "@/lib/vtc-roles";
 import {
+  STAGES,
   getAllVideos,
   getVideo,
   patchVideo,
   stagesFor,
   currentStage,
-  isStageDone,
   withStage,
   type VtcVideo,
   type StageKey,
+  type VideoFields,
 } from "@/lib/vtc-videos";
 
 // "My work" queue for an internal seat. GET returns the videos waiting on this
@@ -44,39 +45,36 @@ export async function GET(req: NextRequest) {
   const isAdmin = auth.role === "admin";
   const role = auth.teamRole ?? null;
   const email = auth.email.toLowerCase().trim();
-  // Admin may focus a specific seat via ?role=
-  const focus = isAdmin ? new URL(req.url).searchParams.get("role") : role;
+  const url = new URL(req.url);
+  // Admin can focus a seat (?role=) or a client (?client=).
+  const focus = isAdmin ? url.searchParams.get("role") : role;
+  const clientFilter = (url.searchParams.get("client") || "").toLowerCase().trim();
+
+  // Columns = this seat's slice of the pipeline (admin with no focus sees all).
+  const columnKeys = (focus && BOARD_COLUMNS[focus]) || STAGES.map((s) => s.key);
+  const columns = columnKeys
+    .map((k) => STAGES.find((s) => s.key === k))
+    .filter(Boolean)
+    .map((s) => ({ key: s!.key, label: s!.label, owner: s!.owner, actor: s!.actor }));
 
   const all = await getAllVideos();
-  const needsAction: ReturnType<typeof shape>[] = [];
-  const upcoming: ReturnType<typeof shape>[] = [];
-
+  const videos = [];
   for (const v of all) {
+    if (clientFilter && v.client_email.toLowerCase() !== clientFilter) continue;
     const stages = stagesFor(v);
     const cur = currentStage(stages, v.progress);
-    if (!cur) continue; // delivered
+    if (!cur) continue; // delivered — off the boards
+    if (!columnKeys.includes(cur.key)) continue; // outside this seat's remit
 
-    const mineNow =
-      cur.actor === "team" &&
-      (focus ? cur.owner === focus : seatOwns(role, isAdmin, cur.owner)) &&
-      // assigned to me, or unclaimed (so I can pick it up)
-      (!v.assignees[cur.owner] || v.assignees[cur.owner] === email || isAdmin);
-    if (mineNow) {
-      needsAction.push(shape(v));
-      continue;
-    }
-    // Coming up: a later team stage I own that isn't done yet.
-    const laterMine = stages.some(
-      (s) =>
-        !isStageDone(v.progress, s.key) &&
-        s.actor === "team" &&
-        (focus ? s.owner === focus : seatOwns(role, isAdmin, s.owner)) &&
-        (!v.assignees[s.owner] || v.assignees[s.owner] === email || isAdmin),
-    );
-    if (laterMine) upcoming.push(shape(v));
+    // Which videos this seat sees: assigned to them, or currently in a stage
+    // their role owns (claimable). Admin sees everything in the columns.
+    const owned = focus ? cur.owner === focus : seatOwns(role, isAdmin, cur.owner);
+    const assignedToMe = focus ? v.assignees[focus] === email : role ? v.assignees[role] === email : false;
+    if (!isAdmin && !assignedToMe && !owned) continue;
+    videos.push(shape(v));
   }
 
-  return NextResponse.json({ role: focus ?? role, needsAction, upcoming });
+  return NextResponse.json({ role: focus ?? role, columns, videos });
 }
 
 export async function POST(req: NextRequest) {
@@ -86,7 +84,7 @@ export async function POST(req: NextRequest) {
   const role = auth.teamRole ?? null;
   const email = auth.email.toLowerCase().trim();
 
-  let body: { videoId?: string; action?: "complete" | "claim" | "set_status"; note?: string } = {};
+  let body: { videoId?: string; action?: "complete" | "claim" | "set_status" | "set_field" | "add_version"; note?: string; field?: string; value?: string; label?: string; url?: string } = {};
   try {
     body = await req.json();
   } catch {
@@ -110,6 +108,17 @@ export async function POST(req: NextRequest) {
   }
   if (action === "set_status") {
     const saved = await patchVideo(videoId, { status_note: (body.note ?? "").trim() || null });
+    return NextResponse.json({ video: shape(saved) });
+  }
+  if (action === "set_field") {
+    const allow = ["script_url", "script_note", "brief_url", "reference_url", "due_date"];
+    if (!body.field || !allow.includes(body.field)) return NextResponse.json({ error: "field not allowed" }, { status: 400 });
+    const saved = await patchVideo(videoId, { [body.field]: (body.value ?? "").trim() || null } as VideoFields);
+    return NextResponse.json({ video: shape(saved) });
+  }
+  if (action === "add_version") {
+    if (!body.label) return NextResponse.json({ error: "label required" }, { status: 400 });
+    const saved = await patchVideo(videoId, { versions: { ...video.versions, [body.label]: (body.url ?? "").trim() } });
     return NextResponse.json({ video: shape(saved) });
   }
   // complete

@@ -64,3 +64,17 @@ body { background: #060504; font-family: 'DM Sans', sans-serif; -webkit-font-smo
   .goh-spinner, .goh-dots > span, .goh-skeleton, .goh-fade { animation: none !important; }
   .goh-skeleton { background-image:none; }
 }
+
+/* Form controls — flat & theme-matched: no native chrome, no blue focus ring,
+   custom chevron on selects. Matches the clean outlined-pill look. */
+select {
+  -webkit-appearance: none; -moz-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='%23EACDC2' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat; background-position: right 11px center; padding-right: 30px;
+}
+select:focus, input:focus, textarea:focus {
+  outline: none !important; box-shadow: none !important;
+  border-color: rgba(183,93,105,0.55) !important;
+}
+select option { color: #1A1423; background: #EFE7DF; }
+button:focus, button:focus-visible { outline: none; }
